@@ -124,9 +124,9 @@
         "新增授权": "wallet-authorize-bind.html",
         "绑定api": "wallet-authorize-bind.html",
         "绑定交易所": "wallet-authorize-bind.html",
-        "发现": "Image 2.html",
-        "发现页": "Image 2.html",
-        "看市场概览": "Image 2.html"
+        "发现": "discover.html",
+        "发现页": "discover.html",
+        "看市场概览": "discover.html"
       };
       if (directMap[normalized]) {
         return directMap[normalized];

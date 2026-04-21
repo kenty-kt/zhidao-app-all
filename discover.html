@@ -1,14 +1,95 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+
+<html lang="zh-CN"><head>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta http-equiv="refresh" content="0; url=discover.html"/>
-<script>window.location.replace("discover.html");</script>
-<title>发现 - ZhiDao AI</title>
+<title>Luminous Finance Dashboard</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Chart.js for bar charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Axios for API calls -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            manrope: ['Manrope', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              light: '#FFF9C4',
+              DEFAULT: '#FFD700',
+              dark: '#FBC02D',
+              glow: 'rgba(255, 215, 0, 0.4)',
+            },
+            secondary: '#F9FAFB',
+            accent: '#10B981', // Green for up
+            danger: '#EF4444', // Red for down
+          },
+          borderRadius: {
+            'card': '12px',
+          },
+          boxShadow: {
+            'premium': '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+            'glow': '0 0 15px rgba(255, 215, 0, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-layout">
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Manrope', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    .status-bar-safe {
+      padding-top: env(safe-area-inset-top);
+    }
+    .bottom-nav-safe {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(229, 231, 235, 0.5);
+    }
+    .bar-chart-item {
+      width: 14px;
+      background: linear-gradient(180deg, #E5E7EB 0%, #D1D5DB 100%);
+      border-radius: 3px 3px 0 0;
+      transition: all 0.3s ease;
+    }
+    .bar-chart-item.highlight {
+      background: linear-gradient(180deg, #FFD700 0%, #FBC02D 100%);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    .sentiment-gradient {
+      background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+    }
+    .glow-dot {
+      width: 6px;
+      height: 6px;
+      background: #FFD700;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #FFD700;
+    }
+  </style>
 </head>
-<body></body>
-</html>
+<body class="text-slate-900 overflow-x-hidden">
+<!-- BEGIN: Header -->
+<header class="status-bar-safe bg-white/90 backdrop-blur-md px-4 py-3 flex items-center justify-between sticky top-0 z-50 border-b border-gray-100/50">
+<div></div>
+<a href="wallet.html" aria-label="个人中心" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-gray-700">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</a>
+</header>
+<!-- END: Header -->
+<main class="p-4 space-y-5">
 <!-- BEGIN: Global Index Section -->
 <section class="glass-card rounded-card p-5 shadow-premium" data-purpose="global-index">
 <div class="flex justify-between items-center mb-5">
