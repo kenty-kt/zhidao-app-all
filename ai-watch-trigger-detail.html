@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>全部触发 - ZhiDao AI</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: "Inter", sans-serif; }
+    .font-headline { font-family: "Manrope", sans-serif; }
+    .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24; }
+    .status-bar-safe { padding-top: env(safe-area-inset-top); }
+    .timeline-line {
+      position: absolute;
+      left: 73px;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: #e5e7eb;
+    }
+  </style>
+</head>
+<body class="bg-white text-[#2c2f30] min-h-screen">
+  <header class="status-bar-safe sticky top-0 z-50 bg-white">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button type="button" onclick="history.back()" class="w-9 h-9 inline-flex items-center justify-center text-gray-700">
+        <span class="material-symbols-outlined text-[22px]">arrow_back_ios_new</span>
+      </button>
+      <div class="text-center">
+        <p class="font-headline text-[18px] font-extrabold tracking-tight">全部触发</p>
+      </div>
+      <div class="w-9 h-9"></div>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 py-5">
+    <section class="relative">
+      <div class="timeline-line"></div>
+
+      <div class="mb-4">
+        <p class="text-sm font-bold text-gray-400">2026-04-20</p>
+      </div>
+
+      <div class="space-y-6">
+        <a href="trade-detail.html?symbol=BTCUSDT" class="grid grid-cols-[64px_16px_1fr] gap-3 items-start">
+          <p class="text-[15px] font-black text-gray-900">08:30</p>
+          <div class="w-4 h-4 rounded-full border-4 border-white bg-rose-500 shadow-[0_0_0_1px_#e5e7eb] mt-0.5"></div>
+          <div class="pb-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold text-gray-500">资产：BTC/USDT</span>
+              <span class="text-[11px] font-bold text-rose-500">触发分类：宏观事件</span>
+            </div>
+            <p class="text-[15px] font-bold text-gray-800 mt-1">美国CPI数据公布</p>
+            <p class="text-sm text-gray-500 mt-1">核心 CPI 高于预期，BTC/USDT 短线波动放大，系统已推送宏观预警。</p>
+          </div>
+        </a>
+
+        <a href="trade-detail.html?symbol=ETHUSDT" class="grid grid-cols-[64px_16px_1fr] gap-3 items-start">
+          <p class="text-[15px] font-black text-gray-900">09:45</p>
+          <div class="w-4 h-4 rounded-full border-4 border-white bg-indigo-500 shadow-[0_0_0_1px_#e5e7eb] mt-0.5"></div>
+          <div class="pb-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold text-gray-500">资产：ETH/USDT</span>
+              <span class="text-[11px] font-bold text-violet-500">触发分类：公告大事</span>
+            </div>
+            <p class="text-[15px] font-bold text-gray-800 mt-1">某项目宣布主网升级</p>
+            <p class="text-sm text-gray-500 mt-1">升级窗口定在明日凌晨，链上活跃度预期上升，已归类到项目公告监控。</p>
+          </div>
+        </a>
+
+        <a href="trade-detail.html?symbol=BTCUSDT" class="grid grid-cols-[64px_16px_1fr] gap-3 items-start">
+          <p class="text-[15px] font-black text-gray-900">14:05</p>
+          <div class="w-4 h-4 rounded-full border-4 border-white bg-red-500 shadow-[0_0_0_1px_#e5e7eb] mt-0.5"></div>
+          <div class="pb-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold text-gray-500">资产：BTC/USDT</span>
+              <span class="text-[11px] font-bold text-red-500">触发分类：重大风险</span>
+            </div>
+            <p class="text-[15px] font-bold text-gray-800 mt-1">巨鲸大额转入交易所</p>
+            <p class="text-sm text-gray-500 mt-1">监测到 1,250 BTC 转入中心化交易所地址，风险级别上调为高。</p>
+          </div>
+        </a>
+
+        <a href="trade-detail.html?symbol=BTCUSDT" class="grid grid-cols-[64px_16px_1fr] gap-3 items-start">
+          <p class="text-[15px] font-black text-gray-900">16:00</p>
+          <div class="w-4 h-4 rounded-full border-4 border-white bg-sky-500 shadow-[0_0_0_1px_#e5e7eb] mt-0.5"></div>
+          <div class="pb-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold text-gray-500">资产：BTC/USDT</span>
+              <span class="text-[11px] font-bold text-sky-500">触发分类：主力动向</span>
+            </div>
+            <p class="text-[15px] font-bold text-gray-800 mt-1">主力撤退信号</p>
+            <p class="text-sm text-gray-500 mt-1">短时成交密集区出现连续减仓，系统标记主力资金撤退。</p>
+          </div>
+        </a>
+
+        <a href="trade-detail.html?symbol=BTCUSDT" class="grid grid-cols-[64px_16px_1fr] gap-3 items-start">
+          <p class="text-[15px] font-black text-gray-900">14:42</p>
+          <div class="w-4 h-4 rounded-full border-4 border-white bg-orange-500 shadow-[0_0_0_1px_#e5e7eb] mt-0.5"></div>
+          <div class="pb-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold text-gray-500">资产：BTC/USDT</span>
+              <span class="text-[11px] font-bold text-orange-500">触发分类：日内高地价</span>
+            </div>
+            <p class="text-[15px] font-bold text-gray-800 mt-1">价格振幅超过 1.5%</p>
+            <p class="text-sm text-gray-500 mt-1">日内波动扩大，触发高低价监控提醒，短线策略重新评估中。</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

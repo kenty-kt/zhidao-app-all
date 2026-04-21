@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>交易流程总览</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: "Inter", sans-serif; }
+    .font-headline { font-family: "Manrope", sans-serif; }
+    .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24; }
+    .phone-card {
+      width: 258px;
+      min-width: 258px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid #dbe2ea;
+      background: #fff;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
+    }
+    .workflow-scroll::-webkit-scrollbar { height: 8px; }
+    .workflow-scroll::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.6);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="bg-[#f5f6f7] text-[#1f2937] min-h-screen">
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div>
+        <h1 class="font-headline text-[28px] md:text-[34px] font-extrabold tracking-tight text-[#111827]">交易流程总览</h1>
+        <p class="mt-2 text-[14px] text-gray-500">从发现机会、选择标的、下单成交到持仓管理与复盘的一整套手机端交易流程。</p>
+      </div>
+      <a href="trade.html" class="shrink-0 h-11 px-4 rounded-[14px] border border-gray-200 bg-white text-[14px] font-semibold inline-flex items-center justify-center text-[#111827]">
+        去交易页
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+    <section class="rounded-[24px] border border-[#e7ebf1] bg-white p-5 shadow-sm">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <h2 class="font-headline text-[22px] font-extrabold text-[#111827]">全流程拆解</h2>
+          <p class="mt-2 text-[14px] leading-7 text-gray-500">建议按从左到右顺序浏览。每张卡代表一个关键页面或关键动作节点。</p>
+        </div>
+        <div class="hidden md:flex items-center gap-2 text-[13px] text-gray-500">
+          <span class="material-symbols-outlined text-[18px]">swipe</span>
+          横向滑动查看全部流程
+        </div>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="w-2.5 h-8 rounded-full bg-[#f59e0b]"></span>
+          <div>
+            <h3 class="font-headline text-[20px] font-extrabold text-[#111827]">手机端交易工作流</h3>
+            <p class="text-[13px] text-gray-500 mt-1">覆盖 12 个核心步骤，适合做产品流程设计、演示和后续拆分开发。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="workflow-scroll overflow-x-auto pb-4">
+        <div class="flex gap-5 items-start">
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">01</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">发现市场</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-gray-200 bg-white p-3">
+                <div class="flex items-center justify-between text-[12px] text-gray-400">
+                  <span>自选</span><span>币安</span><span>欧易</span>
+                </div>
+                <div class="mt-3 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="font-bold">BTC/USDT</p>
+                      <p class="text-[12px] text-gray-400">$3.28亿</p>
+                    </div>
+                    <span class="px-2 py-1 rounded-lg bg-emerald-500 text-white text-[12px] font-semibold">+2.84%</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="font-bold">ETH/USDT</p>
+                      <p class="text-[12px] text-gray-400">$1.94亿</p>
+                    </div>
+                    <span class="px-2 py-1 rounded-lg bg-red-500 text-white text-[12px] font-semibold">-0.72%</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-[13px] leading-6 text-gray-500">用户先看自选、涨跌幅、成交额，筛出想进一步查看的标的。</p>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">02</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">进入详情</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-gray-200 bg-white p-3">
+                <p class="text-[28px] font-black text-rose-500">68,420.20</p>
+                <p class="mt-1 text-[14px] text-gray-500">≈ $68,420.20</p>
+                <div class="mt-4 h-36 rounded-xl bg-gradient-to-b from-[#f8fafc] to-[#eef2ff] border border-gray-200 flex items-center justify-center text-gray-400">
+                  K 线图 / 深度图
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-[12px]">
+                  <div class="rounded-xl bg-gray-50 p-2">24h最高价</div>
+                  <div class="rounded-xl bg-gray-50 p-2">24h最低价</div>
+                </div>
+              </div>
+              <p class="text-[13px] leading-6 text-gray-500">用户在详情页确认价格、趋势、深度、成交，决定是否下单。</p>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">03</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">选择方向</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <button class="h-12 rounded-2xl bg-emerald-500 text-white font-semibold">买入 / 做多</button>
+                <button class="h-12 rounded-2xl bg-red-500 text-white font-semibold">卖出 / 做空</button>
+              </div>
+              <div class="rounded-2xl border border-gray-200 bg-white p-3 space-y-3">
+                <div class="flex justify-between text-[13px]"><span>委托类型</span><span class="font-semibold">限价单</span></div>
+                <div class="flex justify-between text-[13px]"><span>模式</span><span class="font-semibold">逐仓 / 永续</span></div>
+                <div class="flex justify-between text-[13px]"><span>杠杆</span><span class="font-semibold">10x</span></div>
+              </div>
+              <p class="text-[13px] leading-6 text-gray-500">确定交易方向后，选择限价/市价、逐仓/全仓、杠杆倍数。</p>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">04</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">填写订单</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-gray-200 bg-white p-3 space-y-3">
+                <div>
+                  <p class="text-[12px] text-gray-400 mb-1">价格</p>
+                  <div class="h-11 rounded-xl bg-gray-50 border border-gray-200 px-3 flex items-center">68,400</div>
+                </div>
+                <div>
+                  <p class="text-[12px] text-gray-400 mb-1">数量</p>
+                  <div class="h-11 rounded-xl bg-gray-50 border border-gray-200 px-3 flex items-center">0.12 BTC</div>
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                  <button class="h-8 rounded-lg bg-gray-100 text-[12px]">25%</button>
+                  <button class="h-8 rounded-lg bg-gray-100 text-[12px]">50%</button>
+                  <button class="h-8 rounded-lg bg-gray-100 text-[12px]">75%</button>
+                  <button class="h-8 rounded-lg bg-gray-100 text-[12px]">100%</button>
+                </div>
+              </div>
+              <p class="text-[13px] leading-6 text-gray-500">输入价格和数量，或者直接用仓位比例快捷按钮填单。</p>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">05</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">风险确认</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-[13px] leading-6 text-amber-800">
+                当前杠杆较高，预估强平价为 61,440。请确认仓位风险与保证金充足。
+              </div>
+              <label class="flex items-center gap-3 text-[13px]">
+                <input type="checkbox" checked class="w-4 h-4" />
+                <span>我已了解高杠杆和强平风险</span>
+              </label>
+              <button class="w-full h-12 rounded-2xl bg-[#ff9518] text-white font-semibold">确认下单</button>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">06</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">委托结果</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-center">
+                <div class="w-12 h-12 rounded-full bg-emerald-500 text-white mx-auto flex items-center justify-center text-[24px]">✓</div>
+                <p class="mt-3 text-[16px] font-bold text-emerald-700">委托已提交</p>
+                <p class="mt-1 text-[13px] text-emerald-700/80">订单号 #A10284 · 限价买入 0.12 BTC</p>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <button class="h-11 rounded-xl border border-gray-200 bg-white text-[13px] font-semibold">查看持仓</button>
+                <button class="h-11 rounded-xl border border-gray-200 bg-white text-[13px] font-semibold">继续下单</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">07</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">持仓跟踪</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-gray-200 bg-white p-3 space-y-3">
+                <div class="flex justify-between">
+                  <div>
+                    <p class="font-bold">BTC 永续多单</p>
+                    <p class="text-[12px] text-gray-400">开仓价 66,920 · 5x</p>
+                  </div>
+                  <span class="px-2 py-1 rounded-lg bg-emerald-500 text-white text-[12px] font-semibold">+82.1U</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-[12px]">
+                  <div class="rounded-xl bg-gray-50 p-2">强平价</div>
+                  <div class="rounded-xl bg-gray-50 p-2">止盈</div>
+                  <div class="rounded-xl bg-gray-50 p-2">止损</div>
+                </div>
+              </div>
+              <p class="text-[13px] leading-6 text-gray-500">进入持仓页后，查看浮盈亏、保证金占用、风险等级与可操作项。</p>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">08</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">止盈止损</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-gray-200 bg-white p-3 space-y-3">
+                <div>
+                  <p class="text-[12px] text-gray-400 mb-1">止盈价格</p>
+                  <div class="h-11 rounded-xl bg-gray-50 border border-gray-200 px-3 flex items-center">69,800</div>
+                </div>
+                <div>
+                  <p class="text-[12px] text-gray-400 mb-1">止损价格</p>
+                  <div class="h-11 rounded-xl bg-gray-50 border border-gray-200 px-3 flex items-center">66,200</div>
+                </div>
+                <button class="w-full h-11 rounded-xl bg-[#111827] text-white text-[13px] font-semibold">确认策略</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">09</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">部分平仓</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <button class="h-12 rounded-2xl bg-emerald-500 text-white font-semibold">止盈卖出</button>
+                <button class="h-12 rounded-2xl bg-red-500 text-white font-semibold">止损平仓</button>
+              </div>
+              <div class="rounded-2xl border border-gray-200 bg-white p-3">
+                <p class="text-[13px] text-gray-500">可平仓数量</p>
+                <p class="mt-2 text-[22px] font-bold">0.12 BTC</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">10</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">订单与历史</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-gray-200 bg-white overflow-hidden">
+                <div class="px-3 py-2 border-b border-gray-100 text-[12px] text-gray-400">最近成交</div>
+                <div class="px-3 py-3 text-[13px]">09:31 买入 BTC 0.12 / 成交均价 68,402</div>
+                <div class="px-3 py-3 border-t border-gray-100 text-[13px]">09:46 设置止盈止损</div>
+              </div>
+              <p class="text-[13px] leading-6 text-gray-500">可查看当前委托、历史成交、平仓记录与资金费率结算记录。</p>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">11</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">风控提醒</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-rose-200 bg-rose-50 p-3 text-[13px] leading-6 text-rose-700">
+                当前市场波动扩大，账户保证金率逼近预警线，请考虑减仓或补充保证金。
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <button class="h-11 rounded-xl border border-gray-200 bg-white text-[13px] font-semibold">去补仓</button>
+                <button class="h-11 rounded-xl border border-gray-200 bg-white text-[13px] font-semibold">调整止损</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="phone-card">
+            <div class="px-4 py-3 border-b border-gray-100 bg-[#f9fafb]">
+              <p class="text-[12px] font-semibold text-gray-400">12</p>
+              <h4 class="mt-1 text-[17px] font-bold text-[#111827]">复盘归档</h4>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="rounded-2xl border border-gray-200 bg-white p-3 space-y-2">
+                <p class="text-[13px] text-gray-500">本次交易复盘</p>
+                <p class="text-[15px] font-semibold">入场逻辑：突破 4H 压力位 + 成交量放大</p>
+                <p class="text-[15px] font-semibold">结果：+126.4U</p>
+              </div>
+              <button class="w-full h-11 rounded-xl bg-[#111827] text-white text-[13px] font-semibold">保存复盘</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>盯盘信号 - ZhiDao AI</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: "Inter", sans-serif; }
+    .font-headline { font-family: "Manrope", sans-serif; }
+    .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24; }
+    .status-bar-safe { padding-top: env(safe-area-inset-top); }
+    .category-chip.active { background: #fde7e9; color: #ef4444; font-weight: 700; }
+    .timeline-dot::before {
+      content: "";
+      position: absolute;
+      left: -23px;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background: currentColor;
+      box-shadow: 0 0 0 4px #fff;
+    }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 0;
+      bottom: -24px;
+      width: 1px;
+      background: #ececec;
+    }
+    .timeline-item:last-child::before { display: none; }
+  </style>
+</head>
+<body class="bg-white text-[#2c2f30] min-h-screen">
+  <header class="status-bar-safe sticky top-0 z-50 bg-white">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button type="button" onclick="history.back()" class="w-9 h-9 inline-flex items-center justify-center text-gray-700">
+        <span class="material-symbols-outlined text-[22px]">arrow_back_ios_new</span>
+      </button>
+      <div class="text-center">
+        <p id="detailTitle" class="font-headline text-[18px] font-extrabold tracking-tight">BTC/USDT盯盘信号</p>
+      </div>
+      <div class="w-9 h-9"></div>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 py-5 pb-12">
+    <section>
+      <div class="flex items-center justify-between gap-3">
+        <h1 class="text-[18px] font-bold text-gray-900">今日信号</h1>
+      </div>
+
+      <div id="categoryTabs" class="mt-5 grid grid-cols-5 gap-1.5">
+        <button class="category-chip active min-w-0 rounded-full bg-gray-100 px-1 py-2 text-[11px] font-semibold text-gray-600" data-signal-type="macro">宏观事件 2</button>
+        <button class="category-chip min-w-0 rounded-full bg-gray-100 px-1 py-2 text-[11px] font-semibold text-gray-600" data-signal-type="notice">项目公告 2</button>
+        <button class="category-chip min-w-0 rounded-full bg-gray-100 px-1 py-2 text-[11px] font-semibold text-gray-600" data-signal-type="risk">重大风险 2</button>
+        <button class="category-chip min-w-0 rounded-full bg-gray-100 px-1 py-2 text-[11px] font-semibold text-gray-600" data-signal-type="whale">主力动向 2</button>
+        <button class="category-chip min-w-0 rounded-full bg-gray-100 px-1 py-2 text-[11px] font-semibold text-gray-600" data-signal-type="intraday">日内高低价 2</button>
+      </div>
+
+      <div id="timelineList" class="mt-8 space-y-6"></div>
+    </section>
+  </main>
+
+  <script>
+    const categoryTabs = Array.from(document.querySelectorAll("[data-signal-type]"));
+    const detailTitle = document.getElementById("detailTitle");
+    const timelineList = document.getElementById("timelineList");
+    const params = new URLSearchParams(window.location.search);
+    const symbol = params.get("symbol") || "BTC/USDT";
+    const presetType = params.get("type") || "macro";
+
+    const signalMeta = {
+      macro: { label: "宏观事件", count: 2, tone: "text-red-500" },
+      notice: { label: "项目公告", count: 2, tone: "text-violet-500" },
+      risk: { label: "重大风险", count: 2, tone: "text-rose-500" },
+      whale: { label: "主力动向", count: 2, tone: "text-sky-500" },
+      intraday: { label: "日内高低价", count: 2, tone: "text-amber-500" }
+    };
+
+    const signalItems = {
+      macro: [
+        {
+          date: "2026-04-21",
+          time: "09:30:00",
+          summary: `今日${symbol}受宏观数据影响，盘中波动显著放大`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        },
+        {
+          date: "2026-04-21",
+          time: "14:05:00",
+          summary: `${symbol}在美联储官员发言后出现快速拉升`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        }
+      ],
+      notice: [
+        {
+          date: "2026-04-21",
+          time: "10:20:00",
+          summary: `${symbol}相关项目发布路线图更新，社区讨论度提升`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        },
+        {
+          date: "2026-04-20",
+          time: "20:40:00",
+          summary: `${symbol}生态项目宣布测试网上线，短时成交量放大`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        }
+      ],
+      risk: [
+        {
+          date: "2026-04-21",
+          time: "11:15:00",
+          summary: `监测到${symbol}大额筹码转入交易所，风险等级提升`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        },
+        {
+          date: "2026-04-20",
+          time: "23:10:00",
+          summary: `${symbol}短时跌破关键支撑位，系统发出风险提醒`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        }
+      ],
+      whale: [
+        {
+          date: "2026-04-21",
+          time: "13:35:00",
+          summary: `${symbol}主力账户连续加仓，盘口买单明显增强`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        },
+        {
+          date: "2026-04-20",
+          time: "18:50:00",
+          summary: `${symbol}出现主力撤单动作，短线波动预期升高`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        }
+      ],
+      intraday: [
+        {
+          date: "2026-04-21",
+          time: "15:10:00",
+          summary: `${symbol}触及日内高点，振幅扩大至 2.1%`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        },
+        {
+          date: "2026-04-20",
+          time: "16:45:00",
+          summary: `${symbol}接近日内低点，空头动能短时增强`,
+          href: "trade-detail.html?symbol=BTCUSDT"
+        }
+      ]
+    };
+
+    function normalizeSymbolToPair(value) {
+      return (value || "").replace("/", "").replace(/\s+/g, "").toUpperCase();
+    }
+
+    function updateHeader() {
+      if (detailTitle) {
+        detailTitle.textContent = `${symbol}盯盘信号`;
+      }
+      categoryTabs.forEach((tab) => {
+        const type = tab.dataset.signalType;
+        const meta = signalMeta[type];
+        if (!meta) return;
+        tab.textContent = `${meta.label} ${meta.count}`;
+      });
+    }
+
+    function renderTimeline(type) {
+      if (!timelineList) return;
+      const meta = signalMeta[type] || signalMeta.macro;
+      const items = signalItems[type] || [];
+
+      timelineList.innerHTML = "";
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "rounded-3xl bg-gray-50 px-5 py-8 text-center";
+        empty.innerHTML = `
+          <p class="text-sm font-semibold text-gray-500">${meta.label} 暂无新信号</p>
+          <p class="mt-2 text-xs text-gray-400">切换其他分类，或稍后回来查看最新触发。</p>
+        `;
+        timelineList.appendChild(empty);
+        return;
+      }
+
+      let currentDate = "";
+
+      items.forEach((item) => {
+        if (item.date && item.date !== currentDate) {
+          currentDate = item.date;
+          const dateRow = document.createElement("div");
+          dateRow.className = "pb-1";
+          dateRow.innerHTML = `<p class="text-sm font-bold text-gray-400">${item.date}</p>`;
+          timelineList.appendChild(dateRow);
+        }
+
+        const row = document.createElement("a");
+        const pair = normalizeSymbolToPair(symbol);
+        row.href = item.href || `trade-detail.html?symbol=${pair}`;
+        row.className = "grid grid-cols-[92px_1fr] gap-5";
+        row.innerHTML = `
+          <div class="text-[15px] font-black tracking-[0.08em] text-gray-900">${item.time}</div>
+          <div class="timeline-item relative pl-6">
+            <div class="timeline-dot ${meta.tone}"></div>
+            <div class="mt-1 flex items-center gap-2 text-[16px] font-medium text-gray-900">
+              <span>${item.summary}</span>
+              <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-gray-400">
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+              </span>
+            </div>
+          </div>
+        `;
+        timelineList.appendChild(row);
+      });
+    }
+
+    categoryTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const current = tab.dataset.signalType || "macro";
+        categoryTabs.forEach((item) => item.classList.toggle("active", item === tab));
+        renderTimeline(current);
+      });
+    });
+
+    updateHeader();
+
+    const activeTab = categoryTabs.find((tab) => tab.dataset.signalType === presetType) || categoryTabs[0];
+    if (activeTab) {
+      categoryTabs.forEach((item) => item.classList.toggle("active", item === activeTab));
+      renderTimeline(activeTab.dataset.signalType || "macro");
+    }
+  </script>
+</body>
+</html>

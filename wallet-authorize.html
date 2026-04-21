@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>账户授权</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <style>
+    body { font-family: "Inter", sans-serif; }
+  </style>
+</head>
+<body class="bg-white min-h-screen text-[#1b1f24]">
+  <header class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-100">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <button type="button" onclick="history.back()" class="w-9 h-9 inline-flex items-center justify-center text-gray-700">
+        <span class="text-[28px] leading-none">‹</span>
+      </button>
+      <p class="text-[17px] font-semibold">账户授权</p>
+      <div class="w-9 h-9"></div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 py-4 space-y-3 pb-8">
+    <section>
+      <h2 class="text-[15px] font-semibold text-[#222] mb-2.5">已绑定交易所账号</h2>
+
+      <div class="rounded-[20px] bg-[#F7F7F8] border border-[#ECECEC] p-4">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-[64px] h-[64px] rounded-[16px] bg-[#0D2F2B] flex items-center justify-center">
+              <div class="w-9 h-6 rounded-[999px] bg-[#82F7E0] relative">
+                <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-3 bg-[#0D2F2B] rounded-full"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <p class="text-[18px] font-semibold">Hyperliquid</p>
+                <span class="px-2.5 py-1 rounded-xl bg-[#E9E9EA] text-[12px] text-[#7A7A7A] font-medium">主账户</span>
+              </div>
+              <p class="mt-1.5 text-[14px] text-[#8A8A8A]">0×742d...3f9a</p>
+            </div>
+          </div>
+          <div class="px-4 py-2 rounded-full border border-[#16C47F] text-[#16C47F] text-[14px] font-semibold whitespace-nowrap">
+            已授权
+          </div>
+        </div>
+
+        <div class="h-px bg-[#E5E5E5] my-4"></div>
+
+        <div class="grid grid-cols-2 gap-y-5 gap-x-5">
+          <div>
+            <p class="text-[13px] text-[#8A8A8A]">账户净值</p>
+            <p class="mt-2.5 text-[20px] font-semibold">$53,473.82</p>
+          </div>
+          <div>
+            <p class="text-[13px] text-[#8A8A8A]">可用保证金</p>
+            <p class="mt-2.5 text-[20px] font-semibold">$48,392.10</p>
+          </div>
+          <div>
+            <p class="text-[13px] text-[#8A8A8A]">未实现盈亏</p>
+            <p class="mt-2.5 text-[20px] font-semibold text-[#19C37D]">+$2,847.35</p>
+          </div>
+          <div>
+            <p class="text-[13px] text-[#8A8A8A]">持仓数量</p>
+            <p class="mt-2.5 text-[20px] font-semibold">334.33</p>
+          </div>
+        </div>
+
+        <div class="h-px bg-[#E5E5E5] my-4"></div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <a href="#" class="h-[52px] rounded-[16px] border border-[#E5E5E5] bg-white inline-flex items-center justify-center text-[15px] font-semibold text-[#222]">查看详情</a>
+          <a href="#" class="h-[52px] rounded-[16px] border border-[#FF5A67] bg-white inline-flex items-center justify-center text-[15px] font-semibold text-[#FF4D5A]">解绑</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <div class="rounded-[18px] bg-[#F7F7F8] border border-[#ECECEC] px-5 py-4 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-[64px] h-[64px] rounded-[16px] bg-white flex items-center justify-center text-[24px] text-[#F3BA2F] font-bold">◇</div>
+          <p class="text-[18px] font-semibold">币安</p>
+        </div>
+        <a href="wallet-authorize-bind.html" class="h-[52px] px-5 rounded-[16px] bg-[#FF9518] text-white text-[15px] font-semibold inline-flex items-center justify-center">＋ 授权</a>
+      </div>
+
+      <div class="rounded-[18px] bg-[#F7F7F8] border border-[#ECECEC] px-5 py-4 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-[64px] h-[64px] rounded-[16px] bg-black flex items-center justify-center text-[24px] text-white font-bold">◫</div>
+          <p class="text-[18px] font-semibold">OKX</p>
+        </div>
+        <a href="wallet-authorize-bind.html" class="h-[52px] px-5 rounded-[16px] bg-[#FF9518] text-white text-[15px] font-semibold inline-flex items-center justify-center">＋ 授权</a>
+      </div>
+    </section>
+
+    <section class="rounded-[18px] bg-[#E8FAF4] border border-[#D5F2E7] px-5 py-4">
+      <div class="flex items-start gap-3">
+        <div class="text-[#16C47F] text-[22px] leading-none">🛡</div>
+        <p class="text-[13px] leading-6 text-[#5F7B71]">
+          API 密钥经过高强度加密存储，知道Ai 仅用于读取账户信息和执行授权交易。
+        </p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

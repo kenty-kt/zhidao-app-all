@@ -80,37 +80,50 @@
     }
   </style>
 </head>
-<body class="bg-surface text-on-surface min-h-screen pb-44">
+<body class="bg-surface text-on-surface min-h-screen pb-56">
   <header class="status-bar-safe sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
     <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="w-8"></div>
       <div class="text-center">
         <p class="font-headline font-extrabold tracking-tight">资讯助手</p>
       </div>
-      <a href="wallet.html" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">
-        <span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
-        <span>1,280.45 USDT</span>
-      </a>
+      <a href="wallet.html" aria-label="个人中心" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-gray-700"><span class="material-symbols-outlined text-[20px]">account_circle</span></a>
     </div>
   </header>
 
-  <main class="max-w-3xl mx-auto px-4 py-5 pb-28 space-y-4">
+  <main class="max-w-3xl mx-auto px-4 py-5 pb-44 space-y-4">
     <section id="newsList" class="space-y-4"></section>
   </main>
 
   <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-100 bottom-nav-safe z-50">
-    <!-- 底部导航栏已注释 -->
-    <div class="w-full max-w-md mx-auto px-4 pb-4">
-      <div class="flex items-center justify-between gap-3">
-        <a href="news.html" class="w-12 h-12 flex-shrink-0 border border-gray-200 rounded-2xl flex items-center justify-center bg-white shadow-sm">
-          <span class="text-[10px] font-black text-gray-500">资讯</span>
+    <div class="w-full max-w-md mx-auto px-4 pb-4 pt-3">
+      <div class="grid grid-cols-4 gap-2 mb-3">
+        <a href="ai-chat.html" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-400">
+          <span class="material-symbols-outlined text-[21px]">smart_toy</span>
+          <span>agent</span>
         </a>
-        <div id="openAiAssistantInput" class="flex-grow h-12 bg-gray-50 rounded-2xl border border-gray-200 px-4 flex items-center gap-3 cursor-pointer">
-          <span class="material-symbols-outlined text-[#8a6d00] text-xl">mic</span>
+        <a href="Image 2.html" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-400">
+          <span class="material-symbols-outlined text-[21px]">explore</span>
+          <span>发现</span>
+        </a>
+        <a href="ai-watch.html" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-400">
+          <span class="material-symbols-outlined text-[21px]">notifications</span>
+          <span>盯盘</span>
+        </a>
+        <a href="wallet.html" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-400">
+          <span class="material-symbols-outlined text-[21px]">account_circle</span>
+          <span>账户</span>
+        </a>
+      </div>
+      <div class="flex items-center justify-between gap-3">
+        <a href="news.html" class="w-12 h-12 flex-shrink-0 border border-gray-300 rounded-full flex items-center justify-center bg-white text-[10px] font-black text-gray-500 shadow-sm">
+          快讯
+        </a>
+        <div id="openAiAssistantInput" class="flex-grow h-12 bg-white rounded-full border border-gray-300 px-4 flex items-center cursor-pointer shadow-sm">
           <input id="aiAssistantInput" class="flex-grow text-sm border-none focus:ring-0 p-0 text-gray-700 bg-transparent placeholder:text-gray-400 cursor-pointer" placeholder="提问或搜索" type="text" readonly />
         </div>
-        <a href="trade.html" class="w-12 h-12 flex-shrink-0 border border-gray-200 rounded-2xl flex items-center justify-center bg-white shadow-sm">
-          <span class="text-[10px] font-black text-gray-500">行情</span>
+        <a href="market.html" class="w-12 h-12 flex-shrink-0 border border-gray-300 rounded-full flex items-center justify-center bg-white text-[10px] font-black text-gray-500 shadow-sm">
+          行情
         </a>
       </div>
       <p class="text-[9px] text-gray-400 mt-2 text-center">内容由AI生成，不构成投资建议</p>
@@ -288,8 +301,74 @@
         link: SITE_URL,
         summary: '链上活跃地址持续增加，生态项目交易热度回升，市场风险偏好有所修复。',
         thumbnail: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: 'BTC 在关键压力位附近震荡，短线资金等待方向选择',
+        link: SITE_URL,
+        summary: '主流交易所 BTC 永续合约持仓量维持高位，市场在重要阻力区间内反复拉锯。',
+        thumbnail: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: '美联储官员发言偏鹰，风险资产盘中承压',
+        link: SITE_URL,
+        summary: '宏观预期扰动风险偏好，加密市场短线出现回撤，资金转向防御性配置。',
+        thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: '链上监测显示巨鲸地址重新增持 ETH',
+        link: SITE_URL,
+        summary: '多个大额地址在回调阶段连续买入，市场对 ETH 后续修复走势保持关注。',
+        thumbnail: 'https://images.unsplash.com/photo-1640826844123-3d5f42a1f7c2?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: 'Meme 板块活跃度升温，DOGE 与 PEPE 成交量显著放大',
+        link: SITE_URL,
+        summary: '短线投机情绪回升，资金重新流向高弹性资产，但波动风险同步增加。',
+        thumbnail: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: '稳定币净流入增加，市场观望中积累新的上行动能',
+        link: SITE_URL,
+        summary: 'USDT 与 USDC 链上净增发提升，或为后续风险资产反弹提供流动性支持。',
+        thumbnail: 'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: '项目方公布主网升级计划，相关代币短线放量上行',
+        link: SITE_URL,
+        summary: '技术升级预期带动交易活跃度提升，但市场仍需观察正式落地后的持续性表现。',
+        thumbnail: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: '交易所净流出扩大，BTC 抛压阶段性缓解',
+        link: SITE_URL,
+        summary: '链上数据显示大量 BTC 从交易所转出，短线卖压有所缓和，市场情绪趋稳。',
+        thumbnail: 'https://images.unsplash.com/photo-1640161704729-cbe966a08476?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: 'AI 概念代币再度活跃，资金回流高成长叙事赛道',
+        link: SITE_URL,
+        summary: '受科技板块情绪带动，AI 相关代币重新获得关注，板块内部分化明显。',
+        thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80'
+      },
+      {
+        title: '市场波动收敛，主流币进入区间整理阶段',
+        link: SITE_URL,
+        summary: 'BTC、ETH、SOL 等主流资产日内振幅下降，交易者更关注突破信号而非追涨杀跌。',
+        thumbnail: 'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?auto=format&fit=crop&w=1200&q=80'
       }
     ];
+    const FALLBACK_MARKETS = {
+      BTC: { price: 68420.20, priceChange24h: 2.84, volumeUsd24h: 328000000, high24h: 69280.50, low24h: 67120.40 },
+      ETH: { price: 3480.66, priceChange24h: 1.42, volumeUsd24h: 194000000, high24h: 3528.10, low24h: 3392.35 },
+      SOL: { price: 152.84, priceChange24h: -0.88, volumeUsd24h: 84200000, high24h: 156.22, low24h: 149.76 },
+      DOGE: { price: 0.1682, priceChange24h: 3.12, volumeUsd24h: 48700000, high24h: 0.1714, low24h: 0.1608 },
+      PEPE: { price: 0.01284, priceChange24h: 5.82, volumeUsd24h: 78600000, high24h: 0.01315, low24h: 0.01192 },
+      XRP: { price: 0.6248, priceChange24h: -1.15, volumeUsd24h: 51200000, high24h: 0.6394, low24h: 0.6182 },
+      BNB: { price: 598.20, priceChange24h: 0.76, volumeUsd24h: 63300000, high24h: 606.75, low24h: 591.30 },
+      AVAX: { price: 36.48, priceChange24h: 1.06, volumeUsd24h: 28600000, high24h: 37.12, low24h: 35.04 },
+      ADA: { price: 0.7421, priceChange24h: 0.94, volumeUsd24h: 24100000, high24h: 0.7588, low24h: 0.7264 },
+      LINK: { price: 14.86, priceChange24h: 1.58, volumeUsd24h: 31800000, high24h: 15.22, low24h: 14.38 }
+    };
 
 
     const newsListEl = document.getElementById('newsList');
@@ -752,6 +831,7 @@
         marketMap.get(normalizedRecommend) ||
         marketMap.get(baseSymbol(normalizedRecommend)) ||
         marketMap.get(`${baseSymbol(normalizedRecommend)}USDT`) ||
+        FALLBACK_MARKETS[baseSymbol(normalizedRecommend)] ||
         null;
       const priceValue = Number.isFinite(metric?.price) ? `$${formatPrice(metric.price)}` : '--';
       const changeValue = formatPercent(metric?.priceChange24h);
@@ -883,6 +963,18 @@
       news.forEach((item) => newsListEl.appendChild(createNewsCard(item)));
     }
 
+    function renderFallbackNewsImmediately() {
+      const fallback = FALLBACK_NEWS.map((item, index) => ({
+        id: `${Date.now()}-boot-${index}`,
+        title: item.title,
+        link: item.link,
+        summary: item.summary,
+        thumbnail: item.thumbnail,
+        recommend: recommendCoin(`${item.title} ${item.summary}`)
+      }));
+      renderNews(fallback);
+    }
+
     async function loadPageData() {
       if (refreshBtn) refreshBtn.disabled = true;
       if (feedStatusEl) feedStatusEl.textContent = '正在同步 Blockcast 新闻与 Binance 行情...';
@@ -921,12 +1013,13 @@
     tradeCloseBtnEl.addEventListener('click', closeTradeModal);
     if (openAiAssistantInputEl) {
       openAiAssistantInputEl.addEventListener('click', () => {
-        window.location.href = 'ai-chat.html';
+        if (window.openInlineAssistantComposer) window.openInlineAssistantComposer();
       });
     }
     if (aiAssistantInputEl) {
       aiAssistantInputEl.addEventListener('focus', () => {
-        window.location.href = 'ai-chat.html';
+        aiAssistantInputEl.blur();
+        if (window.openInlineAssistantComposer) window.openInlineAssistantComposer();
       });
     }
     if (tradeOpenModalBtnEl) {
@@ -982,7 +1075,10 @@
         closeTradeModal();
       }
     });
+    renderFallbackNewsImmediately();
     loadPageData();
   </script>
+  <script src="inline-assistant-composer.js"></script>
+  <script src="auth-modal.js"></script>
 </body>
 </html>

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>交易交互原型</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      margin: 0;
+      background: #f5f6f7;
+      color: #111827;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
+    }
+    .phone-shell {
+      width: 100%;
+      max-width: 640px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #f5f6f7;
+    }
+    .soft-input {
+      background: #f4f5f7;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+    }
+    .section-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    }
+    .top-seg {
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .top-seg button {
+      height: 54px;
+      font-size: 18px;
+      font-weight: 700;
+      border: 0;
+    }
+    .active-long {
+      background: #16c784;
+      color: #fff;
+    }
+    .active-short {
+      background: #ff3b57;
+      color: #fff;
+    }
+    .record-tab {
+      position: relative;
+      font-size: 18px;
+      font-weight: 700;
+      color: #9ca3af;
+      padding-bottom: 14px;
+    }
+    .record-tab.active {
+      color: #111827;
+    }
+    .record-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      width: 44px;
+      height: 4px;
+      border-radius: 999px;
+      background: #ff9d20;
+      margin: auto;
+    }
+    .record-tab.inactive {
+      color: #9ca3af;
+    }
+    .filter-chip {
+      height: 56px;
+      padding: 0 18px;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #f4f5f7;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      color: #374151;
+    }
+    .choice-btn {
+      height: 64px;
+      border: 1px solid #d1d5db;
+      border-radius: 18px;
+      background: #fff;
+      font-size: 18px;
+      font-weight: 500;
+      color: #111827;
+      position: relative;
+    }
+    .choice-btn.active {
+      border-color: #1f2937;
+      box-shadow: inset 0 0 0 1px #1f2937;
+    }
+    .choice-btn.active::after {
+      content: "check";
+      font-family: "Material Symbols Outlined";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 0 18px 0 14px;
+      background: #1f1f1f;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .sheet {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.32);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 50;
+    }
+    .sheet.open {
+      display: flex;
+    }
+    .sheet-card {
+      width: 100%;
+      max-width: 640px;
+      max-height: 88vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 28px 28px 0 0;
+      padding: 14px 16px 22px;
+      box-shadow: 0 -16px 40px rgba(15, 23, 42, 0.18);
+    }
+    .sheet-handle {
+      width: 72px;
+      height: 6px;
+      border-radius: 999px;
+      background: #d1d5db;
+      margin: 0 auto 18px;
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .chart-panel.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="phone-shell">
+    <div class="bg-white border-b border-gray-100 px-5 pt-5 pb-4">
+      <div class="flex gap-7 text-[18px] font-semibold">
+        <button class="text-gray-400">现货</button>
+        <button class="text-black font-bold">合约</button>
+        <button class="text-gray-400">AI策略</button>
+      </div>
+    </div>
+
+    <main class="px-4 py-4 pb-28">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-[#f7931a] inline-flex items-center justify-center text-white font-black text-[24px]">₿</span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[22px] font-extrabold">BTC/USDT</span>
+            <span class="px-2 py-1 rounded-md bg-white text-black text-[12px] font-semibold border border-gray-200">币安</span>
+            <span class="text-[18px] font-bold">永续</span>
+            <span class="material-symbols-outlined text-[18px] text-gray-500">expand_more</span>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-[24px] text-gray-500">tune</span>
+      </div>
+
+      <div class="mt-5 grid grid-cols-[1.02fr_1.58fr] gap-4">
+        <div>
+          <p class="text-[12px] text-gray-500">资金费率（8时）倒计时</p>
+          <p class="text-[12px] text-gray-400 mt-1">-0.00258% / 03:12:10</p>
+          <div class="mt-5 grid grid-cols-2 text-[13px] text-gray-500">
+            <span>价格(USDT)</span>
+            <span class="text-right">数量(BTC)</span>
+          </div>
+          <div class="mt-2 space-y-1 text-[14px]">
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.80174</span></div>
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.79536</span></div>
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.78529</span></div>
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.76038</span></div>
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.65902</span></div>
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.62941</span></div>
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.78529</span></div>
+            <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.62941</span></div>
+          </div>
+
+          <div class="mt-6">
+            <div class="flex items-end justify-between">
+              <div>
+                <p class="text-[#14d37f] text-[18px] font-extrabold">$72,559.43</p>
+                <p class="mt-1 text-[13px]"><span class="text-gray-400">-214.98</span> <span class="text-[#ff4764] font-semibold">-2.98%</span></p>
+              </div>
+              <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+            </div>
+            <div class="mt-3 space-y-1 text-[14px]">
+              <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.80174</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.79536</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.78529</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.76038</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.65902</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.62941</span></div>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <div class="flex items-center justify-between text-[14px] font-semibold">
+              <span class="text-[#14d37f]">58%</span>
+              <span class="text-[#ff4764]">42%</span>
+            </div>
+            <div class="mt-2 flex h-2 rounded-full overflow-hidden">
+              <div class="bg-[#14d37f] w-[58%]"></div>
+              <div class="bg-[#ff4764] w-[42%]"></div>
+            </div>
+            <div class="mt-3 flex items-center gap-3">
+              <button class="soft-input h-10 px-3 flex-1 flex items-center justify-between text-black">
+                <span>0.1</span>
+                <span class="material-symbols-outlined text-[18px] text-gray-500">expand_more</span>
+              </button>
+              <div class="grid grid-cols-2 gap-1">
+                <span class="w-3 h-3 bg-red-500"></span><span class="w-3 h-3 bg-gray-300"></span>
+                <span class="w-3 h-3 bg-[#14d37f]"></span><span class="w-3 h-3 bg-gray-200"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="open-margin" class="soft-input h-11 text-[16px] font-medium text-black">逐仓</button>
+            <button id="open-leverage" class="soft-input h-11 text-[16px] font-medium text-black">10x</button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-0 mt-3 rounded-2xl overflow-hidden border border-gray-200">
+            <button id="buySideBtn" class="h-12 bg-[#16c784] text-white text-[18px] font-bold">买入</button>
+            <button id="sellSideBtn" class="h-12 bg-white text-[18px] font-semibold text-black">卖出</button>
+          </div>
+
+          <button class="soft-input w-full h-12 mt-3 px-4 flex items-center justify-between text-black">
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px] text-gray-400">info</span>限价委托</span>
+            <span class="material-symbols-outlined text-[20px] text-gray-500">expand_more</span>
+          </button>
+
+          <div class="soft-input mt-3 h-16 px-4 flex items-center justify-between text-black">
+            <button class="text-[28px] text-gray-400">−</button>
+            <div class="text-center">
+              <p class="text-[13px] text-gray-400">价格(USDT)</p>
+              <p class="text-[18px] font-semibold">72559.43</p>
+            </div>
+            <button class="text-[28px] text-gray-400">＋</button>
+          </div>
+
+          <div class="soft-input mt-3 h-16 px-4 flex items-center justify-between text-black">
+            <button class="text-[28px] text-gray-400">−</button>
+            <div class="text-center">
+              <p class="text-[13px] text-gray-400">数量(BTC)</p>
+              <p id="qtyValue" class="text-[18px] font-semibold hidden">0.0001</p>
+            </div>
+            <button class="text-[28px] text-gray-400">＋</button>
+          </div>
+
+          <div class="mt-5 flex items-center justify-between px-1">
+            <span class="w-4 h-4 rotate-45 bg-[#111] border border-[#111]"></span>
+            <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+            <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+            <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+            <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+          </div>
+          <div class="h-[2px] bg-gray-300 -mt-2"></div>
+
+          <div class="soft-input mt-5 h-16 flex items-center justify-center text-[17px] text-gray-400">
+            <div class="text-center">
+              <p class="text-[13px] text-gray-400">成交金额(USDT)</p>
+              <p id="amountValue" class="text-[18px] font-semibold text-black hidden">300.00</p>
+            </div>
+          </div>
+
+          <label class="mt-4 flex items-center gap-2 text-[14px] text-gray-600">
+            <input id="tpslCheckbox" type="checkbox" class="w-5 h-5 rounded border border-gray-300">
+            <span>止盈 / 止损</span>
+          </label>
+
+          <div id="tpslFields" class="mt-4 space-y-3 hidden">
+            <div class="soft-input h-16 px-4 flex items-center justify-between text-black">
+              <button class="text-[28px] text-gray-400">−</button>
+              <div class="text-center">
+                <p class="text-[13px] text-gray-400">止盈触发价</p>
+              </div>
+              <button class="text-[28px] text-gray-400">＋</button>
+            </div>
+            <div class="soft-input h-16 px-4 flex items-center justify-between text-black">
+              <button class="text-[28px] text-gray-400">−</button>
+              <div class="text-center">
+                <p class="text-[13px] text-gray-400">止损触发价</p>
+              </div>
+              <button class="text-[28px] text-gray-400">＋</button>
+            </div>
+          </div>
+
+          <div class="mt-4 space-y-1 text-[14px] text-gray-600">
+            <div class="flex justify-between"><span id="metric1Label">可用</span><span id="metric1Value">1294.58 USDT</span></div>
+            <div class="flex justify-between"><span id="metric2Label">可买</span><span id="metric2Value">0 BTC</span></div>
+            <div class="flex justify-between"><span id="metric3Label">预估手续费</span><span id="metric3Value">-- USDT</span></div>
+          </div>
+
+          <button id="primaryActionBtn" class="w-full h-14 rounded-2xl bg-[#16c784] mt-4 text-[18px] font-bold text-white">买入BTC</button>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white text-[#111827] rounded-t-[28px] border-t border-gray-200">
+        <div class="flex items-center justify-between px-5 pt-4 border-b border-gray-200">
+          <div class="flex items-center gap-8 text-[18px] font-semibold">
+            <button id="ordersTab" class="record-tab active" data-tab="orders">当前委托(1)</button>
+            <button id="assetsTab" class="record-tab" data-tab="assets">持有币种(2)</button>
+          </div>
+          <button id="open-records" class="text-gray-500">
+            <span class="material-symbols-outlined text-[26px]">history</span>
+          </button>
+        </div>
+
+        <div id="assets-panel" class="px-5 py-4 panel">
+          <div class="flex items-center justify-between">
+            <span></span>
+            <button class="h-11 px-5 rounded-2xl bg-gray-100 text-[18px] font-semibold">交易记录</button>
+          </div>
+
+          <div class="mt-4 space-y-4">
+            <div class="section-card p-4 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-[#f7931a] inline-flex items-center justify-center text-white font-black text-[24px]">₿</span>
+                <div>
+                  <p class="text-[18px] font-bold">BTC</p>
+                  <p class="text-[13px] text-gray-500">Bitcoin</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-[14px] text-gray-400">账户余额</p>
+                <p class="text-[18px] font-semibold">0.001</p>
+              </div>
+            </div>
+            <div class="section-card p-4 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-[#f7931a] inline-flex items-center justify-center text-white font-black text-[24px]">₿</span>
+                <div>
+                  <p class="text-[18px] font-bold">BTC</p>
+                  <p class="text-[13px] text-gray-500">Bitcoin</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-[14px] text-gray-400">账户余额</p>
+                <p class="text-[18px] font-semibold">0.001</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="orders-panel" class="px-5 py-4 panel active">
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 text-[14px] text-gray-700">
+              <input type="checkbox" class="w-5 h-5 rounded">
+              <span>隐藏其他交易对</span>
+            </label>
+            <button class="h-11 px-5 rounded-2xl bg-gray-100 text-[18px] font-semibold">撤销全部</button>
+          </div>
+
+          <div class="mt-4 space-y-4">
+            <div class="section-card p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <p class="text-[18px] font-bold">ETH/USDT</p>
+                  <span class="material-symbols-outlined text-[22px] text-gray-400">share</span>
+                </div>
+                <button class="px-6 h-12 rounded-2xl bg-[#ff9518] text-white text-[18px] font-semibold">撤单</button>
+              </div>
+              <p class="mt-4 text-[18px] text-[#16c784]">限价 / 买入 <span class="text-gray-400 text-[16px]">2026-03-15 10:15:06</span></p>
+              <div class="mt-4 grid grid-cols-[1fr_auto] gap-y-3 text-[16px]">
+                <span class="text-gray-500">成交数量 / 买入数量</span><span class="font-semibold">0.1 / 10.12</span>
+                <span class="text-gray-500">委托价格</span><span class="font-semibold">1993.12</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-4 bg-white border-t border-gray-200">
+        <button id="toggle-chart" onclick="togglePrototypeChart()" class="w-full px-5 py-4 flex items-center justify-between text-[18px] font-semibold">
+          <span>BTCUSDT 图表</span>
+          <span id="chartArrow" class="material-symbols-outlined text-[22px] text-gray-500">expand_more</span>
+        </button>
+        <div id="chartPanel" class="hidden px-3 pb-4">
+          <div class="px-2 text-[12px] text-gray-400 flex gap-3">
+            <span>MA</span>
+            <span class="text-[#f59e0b]">MA5:63,927.3810</span>
+            <span class="text-[#8b5cf6]">MA10:63,830.83</span>
+            <span class="text-[#3b82f6]">MA30:83,302.62</span>
+          </div>
+          <div class="mt-2 rounded-[18px] border border-gray-200 bg-white p-3">
+            <div class="h-64 rounded-[14px] bg-gradient-to-b from-white to-[#f8fafc] relative overflow-hidden">
+              <div class="absolute inset-0 flex flex-col justify-between py-3 text-[12px] text-gray-400">
+                <div class="text-right pr-2">9,804.53</div>
+                <div class="text-right pr-2">9,740.53</div>
+                <div class="text-right pr-2">9,677.87</div>
+                <div class="text-right pr-2">9,629.46</div>
+              </div>
+              <div class="absolute left-0 right-10 top-6 bottom-10 flex items-end gap-[6px] px-3">
+                <span class="w-3 h-20 bg-[#16c784] rounded-sm"></span>
+                <span class="w-3 h-16 bg-[#ef4444] rounded-sm"></span>
+                <span class="w-3 h-28 bg-[#16c784] rounded-sm"></span>
+                <span class="w-3 h-24 bg-[#ef4444] rounded-sm"></span>
+                <span class="w-3 h-36 bg-[#16c784] rounded-sm"></span>
+                <span class="w-3 h-44 bg-[#ef4444] rounded-sm"></span>
+                <span class="w-3 h-40 bg-[#16c784] rounded-sm"></span>
+                <span class="w-3 h-34 bg-[#16c784] rounded-sm"></span>
+                <span class="w-3 h-30 bg-[#ef4444] rounded-sm"></span>
+                <span class="w-3 h-24 bg-[#16c784] rounded-sm"></span>
+                <span class="w-3 h-18 bg-[#ef4444] rounded-sm"></span>
+                <span class="w-3 h-26 bg-[#16c784] rounded-sm"></span>
+                <span class="w-3 h-22 bg-[#ef4444] rounded-sm"></span>
+                <span class="w-3 h-29 bg-[#16c784] rounded-sm"></span>
+              </div>
+              <div class="absolute left-3 right-10 bottom-9 h-[2px] bg-gray-200"></div>
+              <div class="absolute left-3 right-10 bottom-3 flex justify-between text-[12px] text-gray-400">
+                <span>12:00</span><span>19:00</span><span>02:00</span><span>09:00</span><span>16:00</span><span>23:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="sheet" id="sheet-records">
+      <div class="sheet-card">
+        <div class="sheet-handle"></div>
+        <div class="flex items-center justify-between">
+          <button class="material-symbols-outlined text-[28px]" data-close-sheet="records">arrow_back</button>
+          <h2 class="text-[18px] font-bold">交易记录</h2>
+          <button id="open-market-switch" class="text-[18px] font-semibold">现货 <span class="material-symbols-outlined align-middle">expand_more</span></button>
+        </div>
+        <div class="mt-6 border-b border-gray-200">
+          <div class="flex gap-8 overflow-x-auto">
+            <button class="record-tab active" data-record="current">当前委托(1)</button>
+            <button class="record-tab" data-record="history">历史委托</button>
+            <button class="record-tab" data-record="position">仓位历史</button>
+            <button class="record-tab" data-record="fill">成交历史</button>
+          </div>
+        </div>
+
+        <div class="mt-6 panel active" id="record-current">
+          <div class="flex items-center gap-3">
+            <button id="open-order-type" class="filter-chip">订单类型 <span class="material-symbols-outlined">expand_more</span></button>
+            <button id="open-direction" class="filter-chip">方向 <span class="material-symbols-outlined">expand_more</span></button>
+            <button class="ml-auto h-14 px-6 rounded-2xl bg-gray-100 text-[18px] font-semibold">撤销全部</button>
+          </div>
+          <div class="mt-8 flex flex-col items-center justify-center text-gray-400">
+            <span class="material-symbols-outlined text-[88px]">description</span>
+            <p class="mt-4 text-[18px]">没有委托</p>
+          </div>
+        </div>
+
+        <div class="mt-6 panel" id="record-history">
+          <div class="flex items-center gap-3">
+            <button class="filter-chip">合约 <span class="material-symbols-outlined">expand_more</span></button>
+            <button class="filter-chip">仓位模式 <span class="material-symbols-outlined">expand_more</span></button>
+            <button id="open-status" class="filter-chip">状态 <span class="material-symbols-outlined">expand_more</span></button>
+            <span class="ml-auto material-symbols-outlined text-[30px] text-gray-500">filter_alt</span>
+          </div>
+          <div class="mt-6 space-y-4">
+            <div class="section-card p-4">
+              <div class="flex justify-between">
+                <div class="flex items-center gap-2">
+                  <p class="text-[18px] font-bold">ETH/USDT</p>
+                  <span class="text-gray-400">永续</span>
+                  <span class="material-symbols-outlined text-gray-400">share</span>
+                </div>
+                <p class="text-[16px] text-gray-400">2026-03-15 10:15:06</p>
+              </div>
+              <p class="mt-4 text-[18px] text-[#16c784]">限价 / 买入</p>
+              <div class="mt-4 grid grid-cols-[1fr_auto] gap-y-3 text-[16px]">
+                <span class="text-gray-500">成交数量 / 买入数量(USDT)</span><span class="font-semibold">0.1 / 10.12</span>
+                <span class="text-gray-500">委托价格</span><span class="font-semibold">1993.12</span>
+                <span class="text-gray-500">状态</span><span class="font-semibold">已取消</span>
+              </div>
+            </div>
+          </div>
+          <p class="mt-6 text-center text-[16px] text-gray-400">已经全部加载完毕</p>
+        </div>
+
+        <div class="mt-6 panel" id="record-position">
+          <div class="flex items-center gap-3">
+            <button class="filter-chip">合约 <span class="material-symbols-outlined">expand_more</span></button>
+            <button class="filter-chip">仓位模式 <span class="material-symbols-outlined">expand_more</span></button>
+            <button class="filter-chip">状态 <span class="material-symbols-outlined">expand_more</span></button>
+            <span class="ml-auto material-symbols-outlined text-[30px] text-gray-500">filter_alt</span>
+          </div>
+          <div class="mt-6 section-card p-4">
+            <div class="flex justify-between">
+              <div class="flex items-center gap-3">
+                <span class="px-3 py-1 rounded-lg bg-[#16c784] text-white text-[14px] font-semibold">多</span>
+                <p class="text-[18px] font-bold">ETH/USDT</p>
+                <span class="px-2 py-1 rounded bg-gray-100 text-[13px]">20X</span>
+                <span class="text-[16px]">全仓</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-[16px] text-gray-400">完全平仓</span>
+                <span class="material-symbols-outlined text-gray-400">share</span>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-3 gap-y-4 text-[15px]">
+              <div><p class="text-gray-400">已实现盈亏(USDT)</p><p class="mt-1 text-[18px] font-semibold">20.33</p></div>
+              <div></div>
+              <div class="text-right"><p class="text-gray-400">收益率</p><p class="mt-1 text-[18px] font-semibold text-[#ff3b57]">-0.06%</p></div>
+              <div><p class="text-gray-400">持仓数量(USDT)</p><p class="mt-1 text-[18px] font-semibold">952.5</p></div>
+              <div><p class="text-gray-400">保证金(USDT)</p><p class="mt-1 text-[18px] font-semibold">1,952.5</p></div>
+              <div class="text-right"><p class="text-gray-400">已平仓量(ETH)</p><p class="mt-1 text-[18px] font-semibold">15.45%</p></div>
+              <div><p class="text-gray-400">开仓价格(USDT)</p><p class="mt-1 text-[18px] font-semibold">952.5</p></div>
+              <div><p class="text-gray-400">平仓均价(USDT)</p><p class="mt-1 text-[18px] font-semibold">2,012.11</p></div>
+              <div class="text-right"><p class="text-gray-400">最高OI(ETH)</p><p class="mt-1 text-[18px] font-semibold">1.21</p></div>
+              <div class="col-span-3 grid grid-cols-[1fr_auto] gap-y-3 mt-2">
+                <span class="text-gray-400">开仓时间</span><span>2026-03-16 12:54:15</span>
+                <span class="text-gray-400">全部平仓时间</span><span>2026-03-16 12:54:15</span>
+              </div>
+            </div>
+          </div>
+          <p class="mt-6 text-center text-[16px] text-gray-400">已经全部加载完毕</p>
+        </div>
+
+        <div class="mt-6 panel" id="record-fill">
+          <div class="flex items-center gap-3">
+            <button class="filter-chip">交易对 <span class="material-symbols-outlined">expand_more</span></button>
+            <button class="filter-chip">方向 <span class="material-symbols-outlined">expand_more</span></button>
+            <span class="ml-auto material-symbols-outlined text-[30px] text-gray-500">filter_alt</span>
+          </div>
+          <div class="mt-6 section-card p-4">
+            <div class="flex justify-between">
+              <p class="text-[18px] font-bold">ETH/USDT</p>
+              <p class="text-[16px] text-gray-400">2026-03-15 10:15:06</p>
+            </div>
+            <p class="mt-4 text-[18px] text-[#16c784]">买入</p>
+            <div class="mt-4 grid grid-cols-[1fr_auto] gap-y-3 text-[16px]">
+              <span class="text-gray-500">价格(USDT)</span><span class="font-semibold">1993.12</span>
+              <span class="text-gray-500">手续费(ETH)</span><span class="font-semibold">0.00001</span>
+              <span class="text-gray-500">总量(USDT)</span><span class="font-semibold">10.12</span>
+            </div>
+          </div>
+          <p class="mt-6 text-center text-[16px] text-gray-400">已经全部加载完毕</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="sheet" id="sheet-margin">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">保证金模式</h3>
+      <div class="mt-6 space-y-4">
+        <button class="w-full text-left rounded-[20px] border border-gray-200 p-5">
+          <p class="text-[18px] font-bold">全仓</p>
+          <p class="mt-2 text-[15px] leading-7 text-gray-500">保证金资产相同的全仓仓位共享该资产的全仓保证金。</p>
+        </button>
+        <button class="w-full text-left rounded-[20px] border border-[#ff9518] bg-[#fff7ed] p-5">
+          <p class="text-[18px] font-bold">逐仓</p>
+          <p class="mt-2 text-[15px] leading-7 text-gray-500">一定数量保证金被分配到仓位上，逐仓模式可单独管理仓位风险。</p>
+        </button>
+      </div>
+      <p class="mt-5 text-[14px] text-gray-500">*请调整保证金模式仅对当前合约生效。</p>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-leverage">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">调整杠杆</h3>
+      <div class="soft-input mt-6 h-16 px-4 flex items-center justify-between text-black">
+        <button class="text-[28px] text-gray-400">−</button>
+        <div class="text-[18px] font-semibold">150x</div>
+        <button class="text-[28px] text-gray-400">＋</button>
+      </div>
+      <div class="mt-6 flex items-center justify-between text-[13px] text-gray-500">
+        <span>1x</span><span>30x</span><span>60x</span><span>90x</span><span>120x</span><span>150x</span>
+      </div>
+      <div class="mt-3 h-[2px] bg-gray-900"></div>
+      <ul class="mt-8 space-y-3 text-[15px] leading-7 text-gray-500">
+        <li>• 当前杠杆倍数最高可开: 300,000 USDT</li>
+        <li>• 逐仓有仓位时，只能提高杠杆倍数。</li>
+        <li>• 杠杆调整将影响当前仓位和挂单。</li>
+      </ul>
+      <button class="mt-8 w-full h-14 rounded-2xl bg-[#ff9518] text-white text-[18px] font-bold">确认</button>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-close">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">平仓</h3>
+      <div class="mt-6 grid grid-cols-[1fr_auto] gap-y-2 text-[16px]">
+        <span class="text-gray-500">合约</span><span class="font-semibold">BTCUSDT <span class="px-2 py-1 rounded bg-gray-100 text-[13px]">永续</span></span>
+        <span class="text-gray-500">开仓价格</span><span class="font-semibold">74,065.28 USDT</span>
+        <span class="text-gray-500">标记价格</span><span class="font-semibold">74,065.28 USDT</span>
+      </div>
+      <div class="mt-6 grid grid-cols-[1fr_116px] gap-3">
+        <div class="soft-input h-16 px-4 flex items-center text-[18px] text-gray-400">市价</div>
+        <button id="open-close-confirm" class="soft-input h-16 px-4 flex items-center justify-between text-[18px] font-semibold">市价 <span class="material-symbols-outlined">expand_more</span></button>
+      </div>
+      <div class="mt-6">
+        <p class="text-[16px] text-gray-500">数量</p>
+        <div class="soft-input h-16 mt-3 px-4 flex items-center justify-between text-[18px]"><span>100% (≈148.1)</span><span>USDT</span></div>
+      </div>
+      <button class="mt-8 w-full h-14 rounded-2xl bg-[#ff9518] text-white text-[18px] font-bold">确认</button>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-close-confirm">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <div class="flex items-center gap-2">
+        <h3 class="text-[18px] font-bold">BTCUSDT</h3>
+        <span class="px-2 py-1 rounded bg-gray-100 text-[13px]">永续</span>
+        <span class="text-[#ff3b57] text-[14px]">卖出/做空</span>
+      </div>
+      <div class="mt-8 grid grid-cols-[1fr_auto] gap-y-2 text-[16px]">
+        <span class="text-gray-500">价格</span><span class="font-semibold">市价</span>
+        <span class="text-gray-500">数量</span><span class="font-semibold">165.28 USDT</span>
+      </div>
+      <p class="mt-6 text-[#ff3b57] text-[15px] leading-7">*当市场价格偏离标记价格超过 5%时，订单可能失败。</p>
+      <div class="mt-6 border-t border-gray-200 pt-6">
+        <label class="flex items-center gap-3 text-[15px]">
+          <input type="checkbox" class="w-5 h-5 rounded">
+          <span>不再为市价单订单提示二次确认。</span>
+        </label>
+        <button class="mt-8 w-full h-14 rounded-2xl bg-[#ff9518] text-white text-[18px] font-bold">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-tpsl">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">止盈/止损</h3>
+      <div class="mt-6 rounded-[18px] border border-gray-200 bg-gray-50 px-4 py-4 text-[15px] leading-7 text-gray-600">
+        市场行情瞬息万变，将止损触发价设置为接近强平价可能会导致订单无法执行。
+      </div>
+      <div class="mt-5 space-y-6">
+        <div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2"><span class="w-1.5 h-8 rounded-full bg-[#16c784]"></span><h3 class="text-[18px] font-bold">止盈</h3></div>
+            <label class="flex items-center gap-2 text-[16px]"><input type="checkbox" class="w-5 h-5 rounded">限价单</label>
+          </div>
+          <div class="mt-3 grid grid-cols-[1.15fr_0.85fr] gap-3">
+            <div class="soft-input h-20 px-4 flex items-center justify-between"><div><p class="text-[13px] text-gray-400">止盈触发价</p><p class="text-[18px] font-semibold">79056.3</p></div><span class="text-[18px]">最新 ▾</span></div>
+            <div class="soft-input h-20 px-4 flex items-center justify-between"><div><p class="text-[13px] text-gray-400">盈亏</p><p class="text-[18px] font-semibold">10.00</p></div><span class="text-[18px]">USDT ▾</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2"><span class="w-1.5 h-8 rounded-full bg-[#ff3b57]"></span><h3 class="text-[18px] font-bold">止损</h3></div>
+            <label class="flex items-center gap-2 text-[16px]"><input type="checkbox" class="w-5 h-5 rounded">限价单</label>
+          </div>
+          <div class="mt-3 grid grid-cols-[1.15fr_0.85fr] gap-3">
+            <div class="soft-input h-20 px-4 flex items-center justify-between"><div><p class="text-[13px] text-gray-400">止损触发价</p><p class="text-[18px] font-semibold">69056.3</p></div><span class="text-[18px]">最新 ▾</span></div>
+            <div class="soft-input h-20 px-4 flex items-center justify-between"><div><p class="text-[13px] text-gray-400">盈亏</p><p class="text-[18px] font-semibold">-10.00</p></div><span class="text-[18px]">USDT ▾</span></div>
+          </div>
+        </div>
+      </div>
+      <button id="open-tpsl-confirm" class="mt-8 w-full h-14 rounded-2xl bg-[#ff9518] text-white text-[18px] font-bold">确认</button>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-tpsl-confirm">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">确认止盈/止损</h3>
+      <div class="mt-6 grid grid-cols-[1fr_auto] gap-y-2 text-[16px]">
+        <span class="text-gray-500">合约</span><span class="font-semibold">BTCUSDT <span class="px-2 py-1 rounded bg-gray-100 text-[13px]">永续</span></span>
+        <span class="text-gray-500">开仓价格</span><span class="font-semibold">74,065.28 USDT</span>
+      </div>
+      <div class="mt-6 border-t border-gray-200 pt-6 space-y-6">
+        <div>
+          <h4 class="text-[18px] font-bold">止盈</h4>
+          <div class="mt-4 grid grid-cols-[1fr_auto] gap-y-2 text-[16px]">
+            <span class="text-gray-500">触发价格 / 委托价格</span><span>74,065.28 USDT / --</span>
+            <span class="text-gray-500">数量</span><span>0.002(100.00%)</span>
+            <span class="text-gray-500">预估总损益</span><span class="text-[#16c784]">10.00 USDT</span>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 pt-6">
+          <h4 class="text-[18px] font-bold">止损</h4>
+          <div class="mt-4 grid grid-cols-[1fr_auto] gap-y-2 text-[16px]">
+            <span class="text-gray-500">触发价格 / 委托价格</span><span>74,065.28 USDT / --</span>
+            <span class="text-gray-500">数量</span><span>0.002(100.00%)</span>
+            <span class="text-gray-500">预估总损益</span><span class="text-[#ff3b57]">-10.00 USDT</span>
+          </div>
+        </div>
+      </div>
+      <button class="mt-8 w-full h-14 rounded-2xl bg-[#ff9518] text-white text-[18px] font-bold">确认</button>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-order-type">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">订单类型</h3>
+      <div class="mt-8 grid grid-cols-2 gap-4">
+        <button class="choice-btn active">全部</button>
+        <button class="choice-btn">限单价</button>
+        <button class="choice-btn">市价止盈止损</button>
+        <button class="choice-btn">限价止盈止损</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-direction">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">方向</h3>
+      <div class="mt-8 grid grid-cols-2 gap-4">
+        <button class="choice-btn active">全部</button>
+        <button class="choice-btn">买入</button>
+        <button class="choice-btn">卖出</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-status">
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+      <h3 class="text-[18px] font-bold">状态</h3>
+      <div class="mt-8 grid grid-cols-2 gap-4">
+        <button class="choice-btn active">完全成交</button>
+        <button class="choice-btn">部分成交</button>
+        <button class="choice-btn">已取消</button>
+        <button class="choice-btn">已过期</button>
+        <button class="choice-btn">STP过期</button>
+        <button class="choice-btn">已拒绝</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePrototypeChart() {
+      const panel = document.getElementById("chartPanel");
+      const arrow = document.getElementById("chartArrow");
+      if (!panel || !arrow) return;
+      const expanded = !panel.classList.contains("hidden");
+      panel.classList.toggle("hidden", expanded);
+      arrow.textContent = expanded ? "expand_more" : "expand_less";
+    }
+
+    const sheets = {
+      margin: document.getElementById("sheet-margin"),
+      leverage: document.getElementById("sheet-leverage"),
+      close: document.getElementById("sheet-close"),
+      closeConfirm: document.getElementById("sheet-close-confirm"),
+      tpsl: document.getElementById("sheet-tpsl"),
+      tpslConfirm: document.getElementById("sheet-tpsl-confirm"),
+      records: document.getElementById("sheet-records"),
+      orderType: document.getElementById("sheet-order-type"),
+      direction: document.getElementById("sheet-direction"),
+      status: document.getElementById("sheet-status"),
+    };
+
+    function setHash(hash) {
+      if (history.replaceState) {
+        history.replaceState(null, "", hash ? `#${hash}` : location.pathname);
+      } else {
+        location.hash = hash || "";
+      }
+    }
+
+    function openSheet(name) {
+      closeAllSheets();
+      sheets[name].classList.add("open");
+      setHash(`sheet-${name}`);
+    }
+
+    function closeSheet(name) {
+      sheets[name].classList.remove("open");
+      if (location.hash === `#sheet-${name}`) setHash("");
+    }
+
+    function closeAllSheets() {
+      Object.values(sheets).forEach((sheet) => sheet.classList.remove("open"));
+    }
+
+    Object.entries(sheets).forEach(([name, sheet]) => {
+      sheet.addEventListener("click", (event) => {
+        if (event.target === sheet) closeSheet(name);
+      });
+    });
+
+    document.querySelectorAll("[data-close-sheet]").forEach((button) => {
+      button.addEventListener("click", () => {
+        closeSheet(button.dataset.closeSheet);
+      });
+    });
+
+    function bindClick(id, handler) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("click", handler);
+    }
+
+    bindClick("open-margin", () => openSheet("margin"));
+    bindClick("open-leverage", () => openSheet("leverage"));
+    bindClick("open-close-quick", () => openSheet("close"));
+    bindClick("open-close-normal", () => openSheet("close"));
+    bindClick("open-close-confirm", () => openSheet("closeConfirm"));
+    bindClick("open-tpsl-edit", () => openSheet("tpsl"));
+    bindClick("open-tpsl-confirm", () => openSheet("tpslConfirm"));
+    bindClick("open-tpsl-list", () => openSheet("tpsl"));
+    bindClick("open-records", () => openSheet("records"));
+    bindClick("open-order-type", () => openSheet("orderType"));
+    bindClick("open-direction", () => openSheet("direction"));
+    bindClick("open-status", () => openSheet("status"));
+
+    const buySideBtn = document.getElementById("buySideBtn");
+    const sellSideBtn = document.getElementById("sellSideBtn");
+    const tpslCheckbox = document.getElementById("tpslCheckbox");
+    const tpslFields = document.getElementById("tpslFields");
+    const qtyValue = document.getElementById("qtyValue");
+    const amountValue = document.getElementById("amountValue");
+    const metric1Label = document.getElementById("metric1Label");
+    const metric2Label = document.getElementById("metric2Label");
+    const metric3Label = document.getElementById("metric3Label");
+    const metric1Value = document.getElementById("metric1Value");
+    const metric2Value = document.getElementById("metric2Value");
+    const metric3Value = document.getElementById("metric3Value");
+    const primaryActionBtn = document.getElementById("primaryActionBtn");
+    const chartToggle = document.getElementById("toggle-chart");
+    const chartPanel = document.getElementById("chartPanel");
+    const chartArrow = document.getElementById("chartArrow");
+
+    let currentSide = "buy";
+
+    function applySide(side) {
+      currentSide = side;
+      const isBuy = side === "buy";
+      buySideBtn.className = isBuy ? "h-12 bg-[#16c784] text-white text-[18px] font-bold" : "h-12 bg-white text-[18px] font-semibold text-black";
+      sellSideBtn.className = !isBuy ? "h-12 bg-[#ff3b57] text-white text-[18px] font-bold" : "h-12 bg-white text-[18px] font-semibold text-black";
+      qtyValue.classList.toggle("hidden", isBuy);
+      amountValue.classList.toggle("hidden", isBuy);
+      tpslCheckbox.checked = !isBuy;
+      tpslFields.classList.toggle("hidden", isBuy);
+      if (isBuy) {
+        primaryActionBtn.className = "w-full h-14 rounded-2xl bg-[#16c784] mt-4 text-[18px] font-bold text-white";
+        primaryActionBtn.textContent = "买入BTC";
+        metric1Label.textContent = "可用";
+        metric2Label.textContent = "可买";
+        metric3Label.textContent = "预估手续费";
+        metric1Value.textContent = "1294.58 USDT";
+        metric2Value.textContent = "0 BTC";
+        metric3Value.textContent = "-- USDT";
+        ordersTab.click();
+      } else {
+        primaryActionBtn.className = "w-full h-14 rounded-2xl bg-[#ff3b57] mt-4 text-[18px] font-bold text-white";
+        primaryActionBtn.textContent = "卖出BTC";
+        metric1Label.textContent = "可用";
+        metric2Label.textContent = "可卖";
+        metric3Label.textContent = "预估手续费";
+        metric1Value.textContent = "1294.58 USDT";
+        metric2Value.textContent = "0 BTC";
+        metric3Value.textContent = "3.00 USDT";
+        assetsTab.click();
+      }
+    }
+
+    if (buySideBtn) buySideBtn.addEventListener("click", () => applySide("buy"));
+    if (sellSideBtn) sellSideBtn.addEventListener("click", () => applySide("sell"));
+    if (tpslCheckbox) {
+      tpslCheckbox.addEventListener("change", () => {
+        tpslFields.classList.toggle("hidden", !tpslCheckbox.checked);
+      });
+    }
+
+    if (chartToggle) {
+      chartToggle.addEventListener("click", () => {
+        togglePrototypeChart();
+      });
+    }
+
+    const ordersTab = document.getElementById("ordersTab");
+    const assetsTab = document.getElementById("assetsTab");
+    const bottomTabs = {
+      orders: document.getElementById("orders-panel"),
+      assets: document.getElementById("assets-panel"),
+    };
+    document.querySelectorAll("[data-tab]").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const key = tab.dataset.tab;
+        document.querySelectorAll("[data-tab]").forEach((item) => {
+          item.className = item === tab ? "record-tab active" : "record-tab inactive";
+        });
+        Object.entries(bottomTabs).forEach(([name, panel]) => {
+          panel.classList.toggle("active", name === key);
+        });
+      });
+    });
+
+    const recordPanels = {
+      current: document.getElementById("record-current"),
+      history: document.getElementById("record-history"),
+      position: document.getElementById("record-position"),
+      fill: document.getElementById("record-fill"),
+    };
+    document.querySelectorAll("[data-record]").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const key = tab.dataset.record;
+        document.querySelectorAll("[data-record]").forEach((item) => item.classList.toggle("active", item === tab));
+        Object.entries(recordPanels).forEach(([name, panel]) => {
+          panel.classList.toggle("active", name === key);
+        });
+        openSheet("records");
+        setHash(`records-${key}`);
+      });
+    });
+
+    function applyRoute() {
+      const route = location.hash.replace(/^#/, "");
+      if (!route) return;
+
+      if (route === "orders-panel") {
+        document.querySelector('[data-tab="orders"]')?.click();
+        return;
+      }
+
+      if (route.startsWith("records-")) {
+        const target = route.replace("records-", "");
+        openSheet("records");
+        document.querySelector(`[data-record="${target}"]`)?.click();
+        return;
+      }
+
+      if (route.startsWith("sheet-")) {
+        const target = route.replace("sheet-", "");
+        if (sheets[target]) {
+          sheets[target].classList.add("open");
+        }
+      }
+    }
+
+    applySide("buy");
+    applyRoute();
+  </script>
+</body>
+</html>

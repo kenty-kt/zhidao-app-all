@@ -12,104 +12,606 @@
     .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24; }
     .status-bar-safe { padding-top: env(safe-area-inset-top); }
     .bottom-safe { padding-bottom: env(safe-area-inset-bottom); }
-    .tag-chip.active { border-color: #ffffff; box-shadow: 0 0 0 2px rgba(255,255,255,0.15); }
+    .tag-chip { transition: all 0.2s ease; }
+    .tag-chip.active { background: #17181b; color: #ffffff; border-color: #17181b; box-shadow: 0 12px 30px rgba(23,24,27,0.16); }
+    .tag-chip.active .chip-icon { filter: saturate(1.1); }
+    .suggest-card { transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease; }
+    .suggest-card:hover { transform: translateY(-2px); border-color: #d1d5db; box-shadow: 0 12px 28px rgba(15,23,42,0.08); }
+    .suggest-card.selected { border-color: #17181b; background: #f8fafc; box-shadow: 0 12px 28px rgba(15,23,42,0.1); }
+    .composer-overlay { transition: opacity 0.25s ease; }
+    .composer-sheet { transition: transform 0.28s ease, opacity 0.28s ease; }
+    .keyboard-key {
+      height: 44px;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.08), 0 2px 8px rgba(15, 23, 42, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: #111827;
+    }
+    .keyboard-key.wide { background: #d1d5db; color: #111827; }
+    .keyboard-key.space { flex: 1; }
   </style>
 </head>
 <body class="bg-[#f5f6f7] text-[#2c2f30] min-h-screen">
   <main class="status-bar-safe min-h-screen flex flex-col">
-    <section class="flex-1 flex flex-col items-center justify-center px-4 pt-10 pb-8">
-      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-sky-200 via-indigo-200 to-purple-200 p-1.5 shadow-[0_0_36px_rgba(255,255,255,0.2)]">
-        <div class="w-full h-full rounded-full bg-[#0f172a] flex items-center justify-center text-5xl">🤖</div>
-      </div>
-
-      <h1 class="mt-8 text-3xl md:text-5xl font-headline font-extrabold tracking-tight text-[#1f2329] text-center">你好~ 我什么都知道</h1>
-      <p class="mt-3 text-base md:text-xl text-[#4b5563] font-semibold text-center">您的行情助手，随时为您解答加密货币相关问题</p>
-
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <button class="tag-chip active inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm md:text-lg font-semibold text-[#323843] border border-gray-200">
-          <span class="text-red-500">🔥</span>热门趋势
+    <header class="fixed top-0 left-0 right-0 status-bar-safe bg-[#f5f6f7]/95 backdrop-blur z-40">
+      <div class="h-12 px-4 flex items-center justify-between">
+        <button id="openHistoryBtn" type="button" class="w-9 h-9 flex items-center justify-center text-[#17181b]">
+          <span class="material-symbols-outlined text-[28px] leading-none">menu</span>
         </button>
-        <button class="tag-chip inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm md:text-lg font-semibold text-[#323843] border border-gray-200"><span class="text-amber-500">🪙</span>加密货币</button>
-        <button class="tag-chip inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm md:text-lg font-semibold text-[#323843] border border-gray-200"><span class="text-blue-500">🌎</span>宏观</button>
-        <button class="tag-chip inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm md:text-lg font-semibold text-[#323843] border border-gray-200"><span class="text-rose-400">♡</span>市场情绪</button>
-        <button class="tag-chip inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm md:text-lg font-semibold text-[#323843] border border-gray-200"><span class="text-violet-500">⛓</span>工作链</button>
-        <button class="tag-chip inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm md:text-lg font-semibold text-[#323843] border border-gray-200"><span class="text-indigo-500">🧭</span>预测市场</button>
-        <button class="tag-chip inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm md:text-lg font-semibold text-[#323843] border border-gray-200"><span class="text-emerald-500">✧</span>学习</button>
+        <h2 class="font-headline text-[18px] font-extrabold text-[#17181b] tracking-tight">知道AI</h2>
+        <button id="newChatBtn" type="button" class="w-9 h-9 flex items-center justify-center text-[#17181b]">
+          <span class="material-symbols-outlined text-[28px] leading-none">add_comment</span>
+        </button>
+      </div>
+    </header>
+
+    <aside id="historyPanel" class="fixed inset-y-0 left-0 w-[83%] max-w-[380px] bg-[#f3f3f3] z-50 transform -translate-x-full transition-transform duration-300 ease-out">
+      <div class="h-full flex flex-col">
+        <div class="px-6 pt-6 pb-4 flex items-center justify-between">
+          <h3 class="font-headline text-[22px] font-extrabold tracking-tight text-[#17181b]">对话历史</h3>
+          <button id="closeHistoryBtn" type="button" class="w-10 h-10 flex items-center justify-center text-gray-500">
+            <span class="material-symbols-outlined text-[34px]">close</span>
+          </button>
+        </div>
+        <div class="px-6 text-[22px] text-gray-500">常用提问</div>
+        <div id="historyList" class="px-4 pt-5 pb-10 space-y-4 overflow-y-auto"></div>
+      </div>
+    </aside>
+    <div id="historyBackdrop" class="fixed inset-0 bg-black/30 z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <section class="flex-1 flex flex-col items-center px-4 pt-16 pb-36">
+      <div class="w-14 h-14 rounded-full bg-gradient-to-br from-sky-200 via-indigo-200 to-purple-200 p-[3px] shadow-[0_0_24px_rgba(255,255,255,0.18)]">
+        <div class="w-full h-full rounded-full bg-[#0f172a] flex items-center justify-center text-2xl">🤖</div>
       </div>
 
-      <div id="suggestionWrap" class="mt-10 max-w-[1450px] flex flex-wrap items-center justify-center gap-3">
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">大饼链上巨鲸最新动向</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">ETH近4个小时走势</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">本周市场热点解读</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">全球稳定币最新政策</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">NFT市场近期回暖迹象</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">DeFi项目新趋势分析</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">数字货币安全性提升新方案</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">区块链技术未来发展预测</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">SOL近4个小时走势</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">BTC近4个小时走势</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">区块链最新利率决议及影响</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">ETH近4个小时走势</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">加密市场最新技术分析</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">NFT市场现状与未来趋势</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">大饼链上鲸最新动向</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">ETH近4个小时走势</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">本周市场热点解读</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">全球稳定币最新政策</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">NFT市场近期趋势分析</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">DeFi项目投资机会探讨</button>
-        <button class="suggest-chip rounded-full bg-white px-4 py-2 text-sm md:text-base text-[#3c4148]">区块链技术未来发展方向</button>
+      <h1 class="mt-4 text-[22px] md:text-3xl font-headline font-extrabold tracking-tight text-[#1f2329] text-center">你的 Web3 研究助手</h1>
+      <p id="categoryDescription" class="mt-2 text-sm md:text-base text-[#4b5563] font-medium text-center max-w-3xl">覆盖行情、链上、DeFi、空投、安全、宏观与项目研究，帮你更快提出专业问题。</p>
+
+      <div id="tagWrap" class="mt-4 flex flex-wrap items-center justify-center gap-2"></div>
+
+      <div class="mt-4 w-full max-w-5xl rounded-[24px] bg-white/90 border border-white shadow-[0_16px_50px_rgba(15,23,42,0.07)] p-4 md:p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-[12px] font-bold uppercase tracking-[0.18em] text-gray-400">当前方向</p>
+            <h3 id="categoryTitle" class="mt-1 text-xl font-headline font-extrabold text-[#17181b]">市场行情</h3>
+            <p id="categoryMeta" class="mt-1 text-[13px] text-gray-500">优先适合趋势判断、节奏拆解和短线计划。</p>
+          </div>
+          <button id="randomPromptBtn" type="button" class="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-[#f8fafc] px-3 py-1.5 text-xs font-semibold text-[#17181b]">
+            <span class="material-symbols-outlined text-[16px]">shuffle</span>
+            换一批
+          </button>
+        </div>
+
+        <div id="suggestionWrap" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+
       </div>
     </section>
 
-    <footer class="bottom-safe fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-100 z-50">
-      <!-- 底部导航栏已注释 -->
+    <footer id="collapsedComposer" class="bottom-safe fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-100 z-50">
       <div class="w-full max-w-md mx-auto px-4 pb-4 pt-3">
-        <div class="flex items-center justify-between gap-3">
-          <a href="news.html" class="w-12 h-12 flex-shrink-0 border border-gray-200 rounded-2xl flex items-center justify-center bg-white shadow-sm">
-            <span class="text-[10px] font-black text-gray-500">资讯</span>
+        <div class="grid grid-cols-4 gap-2 mb-3">
+          <a href="ai-chat.html" class="flex flex-col items-center gap-1 text-[11px] font-bold text-gray-900">
+            <span class="material-symbols-outlined text-[21px]">smart_toy</span>
+            <span>agent</span>
+            <span class="h-0.5 w-7 rounded-full bg-gray-900"></span>
           </a>
-          <div class="flex-grow h-12 bg-gray-50 rounded-2xl border border-gray-200 px-4 flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#8a6d00] text-xl">mic</span>
-            <input id="chatInput" class="flex-grow text-sm border-none focus:ring-0 p-0 text-gray-700 bg-transparent placeholder:text-gray-400" placeholder="问问就知道" type="text" />
-          </div>
-          <a href="trade.html" class="w-12 h-12 flex-shrink-0 border border-gray-200 rounded-2xl flex items-center justify-center bg-white shadow-sm">
-            <span class="text-[10px] font-black text-gray-500">行情</span>
+          <a href="Image 2.html" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-400">
+            <span class="material-symbols-outlined text-[21px]">explore</span>
+            <span>发现</span>
+          </a>
+          <a href="ai-watch.html" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-400">
+            <span class="material-symbols-outlined text-[21px]">notifications</span>
+            <span>盯盘</span>
+          </a>
+          <a href="wallet.html" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-400">
+            <span class="material-symbols-outlined text-[21px]">account_circle</span>
+            <span>账户</span>
+          </a>
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <a href="news.html" class="w-12 h-12 flex-shrink-0 border border-gray-300 rounded-full flex items-center justify-center bg-white text-[10px] font-black text-gray-500 shadow-sm">
+            快讯
+          </a>
+          <button id="openComposerBtn" type="button" class="flex-grow h-12 bg-white rounded-full border border-gray-300 px-4 flex items-center shadow-sm text-left">
+            <span class="flex-grow text-sm text-gray-400">提问或搜索</span>
+          </button>
+          <a href="market.html" class="w-12 h-12 flex-shrink-0 border border-gray-300 rounded-full flex items-center justify-center bg-white text-[10px] font-black text-gray-500 shadow-sm">
+            行情
           </a>
         </div>
         <p class="text-[9px] text-gray-400 mt-2 text-center">内容由AI生成，不构成投资建议</p>
       </div>
     </footer>
+
+    <div id="composerOverlay" class="composer-overlay fixed inset-0 bg-black/10 z-50 opacity-0 pointer-events-none"></div>
+    <div id="composerSheet" class="composer-sheet fixed inset-x-0 bottom-0 z-[60] translate-y-full opacity-0 pointer-events-none">
+      <div class="w-full max-w-md mx-auto bg-white rounded-t-[32px] shadow-[0_-20px_60px_rgba(15,23,42,0.12)] overflow-hidden">
+        <div class="px-4 pt-4 pb-3">
+          <div class="flex justify-end mb-3">
+            <button id="closeComposerBtn" type="button" class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+              <span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span>
+            </button>
+          </div>
+
+          <div class="rounded-[28px] bg-white px-4 pt-4 pb-3">
+            <textarea id="chatInput" class="w-full resize-none border-none bg-transparent p-0 text-[16px] leading-6 text-gray-700 placeholder:text-gray-400 focus:ring-0 shadow-none outline-none" rows="2" placeholder="提问或搜索"></textarea>
+            <div class="mt-4 flex justify-end">
+              <button id="submitBtn" type="button" class="rounded-full bg-[#f8b4bc] px-5 py-2 text-[15px] font-bold text-white disabled:opacity-50" disabled>发送</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-[#d1d5db] px-2 pt-3 pb-4">
+          <div class="mb-3 flex items-center justify-between px-2 text-[18px]">
+            <div class="flex items-center gap-8">
+              <span>123</span>
+              <span>ABC</span>
+              <span class="text-[#ef4444]">中文</span>
+            </div>
+            <span class="material-symbols-outlined text-[22px]">expand_more</span>
+          </div>
+
+          <div class="space-y-2">
+            <div class="grid grid-cols-10 gap-1.5">
+              <span class="keyboard-key">Q</span><span class="keyboard-key">W</span><span class="keyboard-key">E</span><span class="keyboard-key">R</span><span class="keyboard-key">T</span><span class="keyboard-key">Y</span><span class="keyboard-key">U</span><span class="keyboard-key">I</span><span class="keyboard-key">O</span><span class="keyboard-key">P</span>
+            </div>
+            <div class="grid grid-cols-9 gap-1.5 px-4">
+              <span class="keyboard-key">A</span><span class="keyboard-key">S</span><span class="keyboard-key">D</span><span class="keyboard-key">F</span><span class="keyboard-key">G</span><span class="keyboard-key">H</span><span class="keyboard-key">J</span><span class="keyboard-key">K</span><span class="keyboard-key">L</span>
+            </div>
+            <div class="grid grid-cols-[52px_repeat(7,1fr)_52px] gap-1.5">
+              <span class="keyboard-key wide">⇧</span><span class="keyboard-key">Z</span><span class="keyboard-key">X</span><span class="keyboard-key">C</span><span class="keyboard-key">V</span><span class="keyboard-key">B</span><span class="keyboard-key">N</span><span class="keyboard-key">M</span><span class="keyboard-key wide">⌫</span>
+            </div>
+            <div class="grid grid-cols-[72px_1fr_92px] gap-1.5">
+              <span class="keyboard-key wide">123</span>
+              <span class="keyboard-key space">space</span>
+              <span class="keyboard-key wide opacity-60">send</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <script>
-    const tagChips = Array.from(document.querySelectorAll(".tag-chip"));
-    const suggestChips = Array.from(document.querySelectorAll(".suggest-chip"));
+    const tagWrap = document.getElementById("tagWrap");
+    const suggestionWrap = document.getElementById("suggestionWrap");
+    const historyList = document.getElementById("historyList");
+    const categoryDescription = document.getElementById("categoryDescription");
+    const categoryTitle = document.getElementById("categoryTitle");
+    const categoryMeta = document.getElementById("categoryMeta");
     const chatInput = document.getElementById("chatInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const randomPromptBtn = document.getElementById("randomPromptBtn");
+    const openHistoryBtn = document.getElementById("openHistoryBtn");
+    const closeHistoryBtn = document.getElementById("closeHistoryBtn");
+    const historyPanel = document.getElementById("historyPanel");
+    const historyBackdrop = document.getElementById("historyBackdrop");
+    const newChatBtn = document.getElementById("newChatBtn");
+    const openComposerBtn = document.getElementById("openComposerBtn");
+    const closeComposerBtn = document.getElementById("closeComposerBtn");
+    const composerOverlay = document.getElementById("composerOverlay");
+    const composerSheet = document.getElementById("composerSheet");
+    const collapsedComposer = document.getElementById("collapsedComposer");
 
-    tagChips.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        tagChips.forEach((x) => x.classList.remove("active"));
-        btn.classList.add("active");
-      });
-    });
+    const categoryData = [
+      {
+        id: "market",
+        label: "市场行情",
+        icon: "📈",
+        iconClass: "text-red-500",
+        description: "适合问价格趋势、轮动节奏、资金方向、关键支撑阻力和交易计划。",
+        prompts: [
+          "结合近24小时成交量、资金费率和爆仓数据，分析 BTC 当前趋势强弱",
+          "帮我拆解 ETH 接下来 4 小时的关键支撑、压力和触发条件",
+          "SOL 最近这波上涨是情绪驱动还是基本面驱动？",
+          "根据主流币涨跌分布，判断现在是风险偏好上升还是下降阶段",
+          "如果我做短线，今天更适合关注 BTC、ETH 还是 SOL？请给出理由"
+        ]
+      },
+      {
+        id: "onchain",
+        label: "链上数据",
+        icon: "⛓",
+        iconClass: "text-violet-500",
+        description: "适合问巨鲸转账、聪明钱、交易所净流入、稳定币变化和地址行为。",
+        prompts: [
+          "最近 24 小时 BTC 链上巨鲸是否在向交易所转币？这通常意味着什么",
+          "帮我设计一套聪明钱追踪框架，用来发现新热点板块",
+          "如何通过交易所净流入和稳定币铸造判断市场是否准备上攻",
+          "请解释一下活跃地址、持币集中度和长期持有者行为该怎么看",
+          "我想追踪某个 Meme 币主力钱包，应该重点看哪些链上信号"
+        ]
+      },
+      {
+        id: "defi",
+        label: "DeFi",
+        icon: "💧",
+        iconClass: "text-emerald-500",
+        description: "适合问收益来源、协议风险、流动性、借贷、LST/LRT 和套利逻辑。",
+        prompts: [
+          "帮我比较 Aave、Morpho 和 Spark 的借贷收益来源与主要风险",
+          "当前以太坊生态里有哪些相对稳健的美元收益策略？",
+          "如果我要做 DeFi 套利，应该先学会看哪些核心指标",
+          "请解释 LST、LRT、再质押之间的关系，以及它们的额外风险",
+          "如何判断一个 DeFi 协议的 TVL 增长是真增长还是短期激励拉动"
+        ]
+      },
+      {
+        id: "airdrop",
+        label: "空投与任务",
+        icon: "🎁",
+        iconClass: "text-amber-500",
+        description: "适合问交互策略、项目优先级、女巫风险和多链任务规划。",
+        prompts: [
+          "帮我按投入成本、时间成本和预期回报，排序当前值得关注的空投项目",
+          "做空投交互时，哪些行为最容易被项目判定为女巫账号",
+          "如果预算只有 300 美元，怎么分配到多个潜在空投项目更合理",
+          "请给我一份适合新手的每周空投任务清单，按优先级排列",
+          "如何判断一个项目是真的可能发空投，还是只是在制造社区预期"
+        ]
+      },
+      {
+        id: "security",
+        label: "安全风控",
+        icon: "🛡",
+        iconClass: "text-blue-500",
+        description: "适合问钱包权限、钓鱼风险、合约授权、平台暴雷和资产保护。",
+        prompts: [
+          "请给我一份 Web3 钱包安全检查清单，适合每周自查",
+          "如何识别空投钓鱼网站、恶意签名和假官方链接",
+          "授权过很多 DApp 后，我该如何批量排查和取消高风险授权",
+          "如果交易所或协议出现异常，我应该按什么顺序保护资产",
+          "冷热钱包、硬件钱包、多签分别适合哪类用户和资产规模"
+        ]
+      },
+      {
+        id: "macro",
+        label: "宏观政策",
+        icon: "🌍",
+        iconClass: "text-indigo-500",
+        description: "适合问美联储、美元流动性、ETF、监管政策和跨市场联动。",
+        prompts: [
+          "美联储利率路径变化通常通过哪些链条影响加密市场",
+          "如果美元指数走强、10 年期美债收益率上行，BTC 常见反应是什么",
+          "现货 ETF 净流入、矿工抛压和稳定币扩张应该如何综合解读",
+          "美国稳定币监管推进，对 ETH、SOL 和 DeFi 可能有哪些影响",
+          "请用通俗语言解释为什么加密市场会同时受政策和流动性影响"
+        ]
+      },
+      {
+        id: "research",
+        label: "项目研究",
+        icon: "🔎",
+        iconClass: "text-rose-400",
+        description: "适合问赛道空间、代币模型、竞争格局、估值逻辑和催化剂。",
+        prompts: [
+          "请给我一个完整的新项目研究框架，适合判断是否值得长期跟踪",
+          "分析一个代币时，代币释放、FDV、真实收入和叙事应该怎么平衡",
+          "帮我比较同赛道两个项目的护城河、用户增长和潜在风险",
+          "如果一个项目热度很高，我怎样避免只被故事打动而忽略基本面",
+          "请以投资人的视角，拆解 RWA 赛道未来 12 个月的主要机会和风险"
+        ]
+      },
+      {
+        id: "learning",
+        label: "新手学习",
+        icon: "🧠",
+        iconClass: "text-teal-500",
+        description: "适合问概念入门、术语解释、操作步骤和学习路径。",
+        prompts: [
+          "我是新手，请用最通俗的话解释比特币、以太坊和稳定币分别是什么",
+          "从零开始进入 Web3，我应该先学钱包、交易所、链上还是项目研究",
+          "什么是 Gas、滑点、MEV、清算？请分别举一个场景说明",
+          "帮我做一份 30 天 Web3 学习路线图，每周都有重点",
+          "如果我只想先建立安全认知，应该优先掌握哪些基础知识"
+        ]
+      }
+    ];
 
-    suggestChips.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const text = btn.textContent.trim();
-        localStorage.setItem("zhidao_ai_last_prompt", text);
-        window.location.href = "ai-chat-examples.html";
-      });
-    });
+    const historyPrompts = [
+      "结合 ETF 资金流和链上数据，判断 BTC 这周更像震荡还是趋势延续",
+      "给我一份适合新手的 Web3 钱包安全排查清单",
+      "当前有哪些值得跟踪的空投项目？请按投入产出比排序",
+      "Aave、Morpho、Pendle 这几个协议分别适合什么类型用户",
+      "如果我想研究一个新项目，应该按什么顺序做基本面分析",
+      "请解释最近稳定币监管变化对加密市场意味着什么"
+    ];
 
-    function submit() {
-      const text = (chatInput.value || "").trim();
-      if (!text) return;
+    let activeCategoryId = categoryData[0].id;
+    const suggestionState = new Map();
+
+    function shuffleArray(list) {
+      const copy = [...list];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function getSuggestionBatch(category) {
+      const prompts = category.prompts || [];
+      const batchSize = Math.min(4, prompts.length);
+      const currentIndex = suggestionState.get(category.id) || 0;
+      const rotated = prompts.slice(currentIndex).concat(prompts.slice(0, currentIndex));
+      return rotated.slice(0, batchSize);
+    }
+
+    function syncSubmitState() {
+      if (!submitBtn || !chatInput) return;
+      submitBtn.disabled = !(chatInput.value || "").trim();
+    }
+
+    function openPrompt(text) {
       localStorage.setItem("zhidao_ai_last_prompt", text);
       window.location.href = "ai-chat-examples.html";
     }
 
+    function createPromptButton(text, className, options = {}) {
+      const { closeAfterClick = false } = options;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = className;
+      button.innerHTML = `
+        <span class="block text-left text-[15px] font-semibold text-[#17181b] leading-6">${text}</span>
+      `;
+      button.addEventListener("click", () => {
+        if (button.classList.contains("suggest-card")) {
+          Array.from(document.querySelectorAll(".suggest-card")).forEach((card) => card.classList.remove("selected"));
+          button.classList.add("selected");
+        }
+        if (closeAfterClick) {
+          closeHistory();
+        }
+        openPrompt(text);
+      });
+      return button;
+    }
+
+    function renderHistory() {
+      if (!historyList) return;
+      historyList.innerHTML = "";
+      historyPrompts.forEach((text, index) => {
+        const className = index === 0
+          ? "history-item w-full text-left rounded-3xl bg-[#e9eaee] px-5 py-4 text-[20px] text-[#222428]"
+          : "history-item w-full text-left rounded-3xl px-5 py-4 text-[20px] text-[#222428]";
+        historyList.appendChild(createPromptButton(text, className, { closeAfterClick: true }));
+      });
+    }
+
+    function renderSuggestions(categoryId) {
+      const category = categoryData.find((item) => item.id === categoryId) || categoryData[0];
+      if (categoryDescription) {
+        categoryDescription.textContent = category.description;
+      }
+      if (categoryTitle) {
+        categoryTitle.textContent = category.label;
+      }
+      if (categoryMeta) {
+        categoryMeta.textContent = category.prompts[0];
+      }
+      if (!suggestionWrap) return;
+      suggestionWrap.innerHTML = "";
+      const batch = getSuggestionBatch(category);
+      batch.forEach((text) => {
+        suggestionWrap.appendChild(
+          createPromptButton(text, "suggest-card rounded-[20px] border border-gray-200 bg-white px-3.5 py-3 text-sm text-[#3c4148] text-left")
+        );
+      });
+    }
+
+    function renderTags() {
+      if (!tagWrap) return;
+      tagWrap.innerHTML = "";
+      categoryData.forEach((item, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.category = item.id;
+        button.className = "tag-chip inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs md:text-sm font-semibold text-[#323843] border border-gray-200";
+        if (index === 0) {
+          button.classList.add("active");
+        }
+        button.addEventListener("click", () => {
+          activeCategoryId = item.id;
+          Array.from(tagWrap.querySelectorAll(".tag-chip")).forEach((x) => x.classList.remove("active"));
+          button.classList.add("active");
+          renderSuggestions(activeCategoryId);
+        });
+        button.innerHTML = `<span class="chip-icon ${item.iconClass}">${item.icon}</span>${item.label}`;
+        tagWrap.appendChild(button);
+      });
+    }
+
+    function openHistory() {
+      historyPanel.classList.remove("-translate-x-full");
+      historyBackdrop.classList.remove("opacity-0", "pointer-events-none");
+      document.body.classList.add("overflow-hidden");
+    }
+
+    function closeHistory() {
+      historyPanel.classList.add("-translate-x-full");
+      historyBackdrop.classList.add("opacity-0", "pointer-events-none");
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    function openComposer() {
+      if (composerOverlay) {
+        composerOverlay.classList.remove("opacity-0", "pointer-events-none");
+      }
+      if (composerSheet) {
+        composerSheet.classList.remove("translate-y-full", "opacity-0", "pointer-events-none");
+      }
+      if (collapsedComposer) {
+        collapsedComposer.classList.add("opacity-0");
+      }
+      document.body.classList.add("overflow-hidden");
+      window.setTimeout(() => {
+        if (chatInput) chatInput.focus();
+      }, 120);
+    }
+
+    function closeComposer() {
+      if (composerOverlay) {
+        composerOverlay.classList.add("opacity-0", "pointer-events-none");
+      }
+      if (composerSheet) {
+        composerSheet.classList.add("translate-y-full", "opacity-0", "pointer-events-none");
+      }
+      if (collapsedComposer) {
+        collapsedComposer.classList.remove("opacity-0");
+      }
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    renderTags();
+    renderSuggestions(activeCategoryId);
+    renderHistory();
+
+    if (openHistoryBtn) {
+      openHistoryBtn.addEventListener("click", openHistory);
+    }
+
+    if (closeHistoryBtn) {
+      closeHistoryBtn.addEventListener("click", closeHistory);
+    }
+
+    if (historyBackdrop) {
+      historyBackdrop.addEventListener("click", closeHistory);
+    }
+
+    if (newChatBtn) {
+      newChatBtn.addEventListener("click", () => {
+        localStorage.removeItem("zhidao_ai_last_prompt");
+        if (chatInput) {
+          chatInput.value = "";
+          openComposer();
+        }
+        closeHistory();
+        if (!window.location.pathname.endsWith("ai-chat.html")) {
+          window.location.href = "ai-chat.html";
+        }
+        Array.from(document.querySelectorAll(".suggest-card")).forEach((card) => card.classList.remove("selected"));
+        syncSubmitState();
+      });
+    }
+
+    if (randomPromptBtn) {
+      randomPromptBtn.addEventListener("click", () => {
+        const category = categoryData.find((item) => item.id === activeCategoryId) || categoryData[0];
+        const prompts = shuffleArray(category.prompts || []);
+        if (!prompts.length) return;
+        const nextIndex = ((suggestionState.get(category.id) || 0) + 4) % prompts.length;
+        category.prompts = prompts;
+        suggestionState.set(category.id, nextIndex);
+        renderSuggestions(activeCategoryId);
+      });
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeHistory();
+        closeComposer();
+      }
+    });
+
+    function normalizeShortcutText(inputText) {
+      return (inputText || "").trim().toLowerCase().replace(/\s+/g, "");
+    }
+
+    function getShortcutRoute(inputText) {
+      const normalized = normalizeShortcutText(inputText);
+      const assetMap = {
+        btc: { symbol: "BTC/USDT", price: "68,420.20", change: "+2.84%" },
+        eth: { symbol: "ETH/USDT", price: "3,480.66", change: "+1.42%" },
+        sol: { symbol: "SOL/USDT", price: "152.84", change: "-0.88%" },
+        比特币: { symbol: "BTC/USDT", price: "68,420.20", change: "+2.84%" },
+        以太坊: { symbol: "ETH/USDT", price: "3,480.66", change: "+1.42%" },
+      };
+      const directMap = {
+        "你能干什么": "ai-chat.html",
+        "能做什么": "ai-chat.html",
+        "帮助": "ai-chat.html",
+        "全部触发": "ai-watch-trigger-detail.html",
+        "查看全部触发": "ai-watch-trigger-detail.html",
+        "全部触发页": "ai-watch-trigger-detail.html",
+        "管理自选": "ai-watch-detail.html",
+        "删除自选": "ai-watch-detail.html",
+        "自选管理": "ai-watch-detail.html",
+        "去盯盘": "ai-watch.html",
+        "打开盯盘": "ai-watch.html",
+        "看快讯": "news.html",
+        "最新快讯": "news.html",
+        "新闻": "news.html",
+        "看行情": "trade.html",
+        "行情页": "trade.html",
+        "去交易所": "trade.html",
+        "看账户": "wallet.html",
+        "我的账户": "wallet.html",
+        "钱包": "wallet.html",
+        "管理账户": "account-manage.html",
+        "账户管理": "account-manage.html",
+        "管理钱包": "wallet-manage.html",
+        "钱包管理": "wallet-manage.html",
+        "去授权": "wallet-authorize.html",
+        "管理授权": "wallet-authorize.html",
+        "交易所授权": "wallet-authorize.html",
+        "新增授权": "wallet-authorize-bind.html",
+        "绑定api": "wallet-authorize-bind.html",
+        "绑定交易所": "wallet-authorize-bind.html",
+        "发现": "Image 2.html",
+        "发现页": "Image 2.html",
+        "看市场概览": "Image 2.html",
+      };
+      if (directMap[normalized]) {
+        return directMap[normalized];
+      }
+
+      for (const [assetKey, assetValue] of Object.entries(assetMap)) {
+        if (normalized === `${assetKey}盯盘` || normalized === `帮我看${assetKey}盯盘` || normalized === `我要${assetKey}盯盘`) {
+          return `ai-watch-config.html?symbol=${encodeURIComponent(assetValue.symbol)}&price=${encodeURIComponent(assetValue.price)}&change=${encodeURIComponent(assetValue.change)}`;
+        }
+        if (normalized === `${assetKey}触发` || normalized === `帮我看${assetKey}触发` || normalized === `${assetKey}今日触发`) {
+          return `ai-watch-trigger-signal-detail.html?symbol=${encodeURIComponent(assetValue.symbol)}&type=macro`;
+        }
+      }
+
+      return null;
+    }
+
+    function submit() {
+      const text = (chatInput.value || "").trim();
+      if (!text) return;
+      const shortcutRoute = getShortcutRoute(text);
+      if (shortcutRoute) {
+        window.location.href = shortcutRoute;
+        return;
+      }
+      localStorage.setItem("zhidao_ai_last_prompt", text);
+      window.location.href = "ai-chat-examples.html";
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener("click", submit);
+    }
+
+    if (openComposerBtn) {
+      openComposerBtn.addEventListener("click", openComposer);
+    }
+
+    if (closeComposerBtn) {
+      closeComposerBtn.addEventListener("click", closeComposer);
+    }
+
+    if (composerOverlay) {
+      composerOverlay.addEventListener("click", closeComposer);
+    }
+
     if (chatInput) {
+      chatInput.addEventListener("input", syncSubmitState);
       chatInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
@@ -117,6 +619,8 @@
         }
       });
     }
+
+    syncSubmitState();
   </script>
 </body>
 </html>

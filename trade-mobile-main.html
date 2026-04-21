@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>交易主界面</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link href="./trade-mobile.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="phone-shell">
+    <div class="phone-screen bg-[#f5f6f7] text-[#111827]">
+      <div class="trade-top-tabs bg-white border-b border-gray-100">
+        <span class="muted">现货</span>
+        <span class="active">合约</span>
+        <span class="muted">AI策略</span>
+      </div>
+
+      <div class="pair-header">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-full bg-[#f7931a] inline-flex items-center justify-center text-white font-black text-[24px]">₿</span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[22px] font-extrabold">BTC/USDT</span>
+              <span class="px-2 py-1 rounded-md bg-white text-black text-[12px] font-semibold border border-gray-200">币安</span>
+              <span class="text-[18px] font-bold">永续</span>
+              <span class="material-symbols-outlined text-[18px] text-gray-500">expand_more</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[24px] text-gray-500">tune</span>
+        </div>
+
+        <div class="mt-5 grid grid-cols-[1.02fr_1.58fr] gap-4">
+          <div>
+            <p class="text-[12px] text-gray-500">资金费率（8时）倒计时</p>
+            <p class="text-[12px] text-gray-400 mt-1">-0.00258% / 03:12:10</p>
+            <div class="mt-5 grid grid-cols-2 text-[13px] text-gray-500">
+              <span>价格(USDT)</span>
+              <span class="text-right">数量(BTC)</span>
+            </div>
+            <div class="mt-2 space-y-1 text-[14px]">
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.80174</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.79536</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.78529</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.76038</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.65902</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.62941</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.78529</span></div>
+              <div class="grid grid-cols-2"><span class="text-[#ff4764]">72,559.43</span><span class="text-right text-gray-400">0.62941</span></div>
+            </div>
+
+            <div class="mt-6">
+              <div class="flex items-end justify-between">
+                <div>
+                  <p class="text-[#14d37f] text-[18px] font-extrabold">$72,559.43</p>
+                  <p class="mt-1 text-[13px]"><span class="text-gray-400">-214.98</span> <span class="text-[#ff4764] font-semibold">-2.98%</span></p>
+                </div>
+                <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+              </div>
+              <div class="mt-3 space-y-1 text-[14px]">
+                <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.80174</span></div>
+                <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.79536</span></div>
+                <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.78529</span></div>
+                <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.76038</span></div>
+                <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.65902</span></div>
+                <div class="grid grid-cols-2"><span class="text-[#14d37f]">72,559.43</span><span class="text-right text-gray-400">0.62941</span></div>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <div class="flex items-center justify-between text-[14px] font-semibold">
+                <span class="text-[#14d37f]">58%</span>
+                <span class="text-[#ff4764]">42%</span>
+              </div>
+              <div class="mt-2 flex h-2 rounded-full overflow-hidden">
+                <div class="bg-[#14d37f] w-[58%]"></div>
+                <div class="bg-[#ff4764] w-[42%]"></div>
+              </div>
+              <div class="mt-3 flex items-center gap-3">
+                <div class="soft-input h-10 px-3 flex-1 flex items-center justify-between text-black">
+                  <span>0.1</span>
+                  <span class="material-symbols-outlined text-[18px] text-gray-500">expand_more</span>
+                </div>
+                <div class="grid grid-cols-2 gap-1">
+                  <span class="w-3 h-3 bg-red-500"></span><span class="w-3 h-3 bg-gray-300"></span>
+                  <span class="w-3 h-3 bg-[#14d37f]"></span><span class="w-3 h-3 bg-gray-200"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="grid grid-cols-2 gap-2">
+              <a href="trade-mobile-position-mode.html" class="soft-input h-11 text-[16px] font-medium text-black inline-flex items-center justify-center">逐仓</a>
+              <a href="trade-mobile-adjust-leverage.html" class="soft-input h-11 text-[16px] font-medium text-black inline-flex items-center justify-center">10x</a>
+            </div>
+
+            <div class="top-seg grid grid-cols-2 mt-3">
+              <button class="active-long">开仓</button>
+              <button class="bg-white text-[18px] font-semibold text-black">平仓</button>
+            </div>
+
+            <button class="soft-input w-full h-12 mt-3 px-4 flex items-center justify-between text-black">
+              <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px] text-gray-400">info</span>限价委托</span>
+              <span class="material-symbols-outlined text-[20px] text-gray-500">expand_more</span>
+            </button>
+
+            <div class="soft-input mt-3 h-16 px-4 flex items-center justify-between text-black">
+              <button class="text-[28px] text-gray-400">−</button>
+              <div class="text-center">
+                <p class="text-[13px] text-gray-400">价格(USDT)</p>
+                <p class="text-[18px] font-semibold">72559.43</p>
+              </div>
+              <button class="text-[28px] text-gray-400">＋</button>
+            </div>
+
+            <div class="soft-input mt-3 h-16 px-4 flex items-center justify-between text-black">
+              <button class="text-[28px] text-gray-400">−</button>
+              <div class="text-center">
+                <p class="text-[13px] text-gray-400">数量(BTC)</p>
+              </div>
+              <button class="text-[28px] text-gray-400">＋</button>
+            </div>
+
+            <div class="mt-5 flex items-center justify-between px-1">
+              <span class="w-4 h-4 rotate-45 bg-[#111] border border-[#111]"></span>
+              <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+              <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+              <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+              <span class="w-4 h-4 rotate-45 bg-white border border-gray-200"></span>
+            </div>
+            <div class="h-[2px] bg-gray-300 -mt-2"></div>
+
+            <div class="soft-input mt-5 h-16 flex items-center justify-center text-[17px] text-gray-400">成交金额(USDT)</div>
+
+            <label class="mt-4 flex items-center gap-2 text-[14px] text-gray-600">
+              <input type="checkbox" class="w-5 h-5 rounded border border-gray-300">
+              <span>止盈 / 止损</span>
+            </label>
+
+            <div class="mt-4 space-y-1 text-[14px] text-gray-600">
+              <div class="flex justify-between"><span>最大</span><span>1294.58 USDT</span></div>
+              <div class="flex justify-between"><span>保证金</span><span>1294.58 USDT</span></div>
+            </div>
+
+            <button class="w-full h-14 rounded-2xl bg-[#16c784] mt-4 text-[18px] font-bold text-white">买入做多</button>
+
+            <div class="mt-4 space-y-1 text-[14px] text-gray-600">
+              <div class="flex justify-between"><span>最大</span><span>1294.58 USDT</span></div>
+              <div class="flex justify-between"><span>保证金</span><span>1294.58 USDT</span></div>
+            </div>
+
+            <button class="w-full h-14 rounded-2xl bg-[#ff3b57] mt-4 text-[18px] font-bold text-white">卖出做空</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white text-[#111827] rounded-t-[28px] min-h-[360px] border-t border-gray-200">
+        <div class="flex items-center justify-between px-5 pt-4 border-b border-gray-200">
+          <div class="flex items-center gap-8 text-[18px] font-semibold">
+            <span class="tab-underline pb-4">持有仓位(2)</span>
+            <a href="trade-mobile-current-orders.html" class="text-gray-400 pb-4">当前委托(2)</a>
+          </div>
+          <a href="trade-mobile-records-empty.html" class="text-gray-500">
+            <span class="material-symbols-outlined text-[26px]">history</span>
+          </a>
+        </div>
+
+        <div class="px-5 py-4">
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 text-[14px] text-gray-700">
+              <input type="checkbox" class="w-5 h-5 rounded">
+              <span>隐藏其他合约</span>
+            </label>
+            <button class="h-11 px-5 rounded-2xl bg-gray-100 text-[18px] font-semibold">一键平仓</button>
+          </div>
+
+          <div class="mt-4 space-y-4">
+            <div class="section-card p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="px-3 py-1 rounded-lg bg-[#16c784] text-white text-[14px] font-semibold">多</span>
+                  <p class="text-[18px] font-bold">ETH/USDT</p>
+                  <span class="px-2 py-1 rounded-md bg-gray-100 text-[13px]">20X</span>
+                  <span class="text-[16px]">全仓</span>
+                </div>
+                <span class="material-symbols-outlined text-[22px] text-gray-400">share</span>
+              </div>
+              <div class="mt-4 grid grid-cols-3 gap-y-4 text-[14px]">
+                <div><p class="text-gray-400">未实现盈亏(USDT)</p><p class="mt-1 text-[18px] font-semibold">20.33</p></div>
+                <div></div>
+                <div class="text-right"><p class="text-gray-400">收益率</p><p class="mt-1 text-[18px] font-semibold text-[#ff3b57]">-0.06%</p></div>
+                <div><p class="text-gray-400">持仓数量(USDT)</p><p class="mt-1 text-[18px] font-semibold">952.5</p></div>
+                <div><p class="text-gray-400">保证金(USDT)</p><p class="mt-1 text-[18px] font-semibold">1,952.5</p></div>
+                <div class="text-right"><p class="text-gray-400">保证金比率</p><p class="mt-1 text-[18px] font-semibold">15.45%</p></div>
+                <div><p class="text-gray-400">开仓价格(USDT)</p><p class="mt-1 text-[18px] font-semibold">952.5</p></div>
+                <div><p class="text-gray-400">标记均价(USDT)</p><p class="mt-1 text-[18px] font-semibold">2,012.11</p></div>
+                <div class="text-right"><p class="text-gray-400">强平价格(USDT)</p><p class="mt-1 text-[18px] font-semibold">1.21</p></div>
+              </div>
+              <div class="mt-4 flex items-center justify-between text-[14px]">
+                <span class="text-gray-500">止盈/止损(2) $72,559.43 / $70,559.43</span>
+                <a href="trade-mobile-tpsl-list.html" class="material-symbols-outlined text-[20px] text-gray-500">edit</a>
+              </div>
+              <div class="mt-4 grid grid-cols-3 gap-3">
+                <a href="trade-mobile-close.html" class="h-12 rounded-2xl bg-gray-100 text-[18px] font-semibold inline-flex items-center justify-center">闪电平仓</a>
+                <a href="trade-mobile-tpsl-edit.html" class="h-12 rounded-2xl bg-gray-100 text-[18px] font-semibold inline-flex items-center justify-center">止盈止损</a>
+                <a href="trade-mobile-close.html" class="h-12 rounded-2xl bg-gray-100 text-[18px] font-semibold inline-flex items-center justify-center">平仓</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+</body>
+</html>

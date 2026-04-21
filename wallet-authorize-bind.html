@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>交易所授权</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <style>
+    body { font-family: "Inter", sans-serif; }
+    .page-shadow { box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06); }
+    .exchange-tab.active {
+      background: #1f1f1f;
+      color: #fff;
+      border-color: #1f1f1f;
+    }
+    .exchange-tab {
+      background: #f7f7f8;
+      color: #7a7a7a;
+      border: 1px solid #e5e7eb;
+    }
+    .mode-tab.active {
+      color: #1f1f1f;
+      font-weight: 700;
+    }
+    .mode-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      background: #1f1f1f;
+      border-radius: 999px;
+    }
+    .panel-hidden { display: none !important; }
+  </style>
+</head>
+<body class="bg-[#f5f6f7] min-h-screen text-[#1b1f24]">
+  <header class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-100">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <button type="button" onclick="history.back()" class="w-9 h-9 inline-flex items-center justify-center text-gray-700">
+        <span class="text-[28px] leading-none">‹</span>
+      </button>
+      <p class="text-[17px] font-semibold">交易所授权</p>
+      <div class="w-9 h-9"></div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 py-5 pb-10">
+    <section class="bg-white border border-gray-100 rounded-2xl p-4 page-shadow">
+      <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap pb-1">
+        <button class="exchange-tab active px-5 h-11 rounded-[14px] text-[15px] font-medium" data-exchange="binance">Binance</button>
+        <button class="exchange-tab px-5 h-11 rounded-[14px] text-[15px] font-medium" data-exchange="okx">OKX</button>
+        <button class="exchange-tab px-5 h-11 rounded-[14px] text-[15px] font-medium" data-exchange="hyperliquid">Hyperliquid</button>
+      </div>
+
+      <div id="modeTabs" class="flex items-center gap-7 mt-4 border-b border-gray-100">
+        <button class="mode-tab active relative text-[15px] font-medium text-[#8A8A8A] pb-3" data-mode="quick">快速授权</button>
+        <button class="mode-tab relative text-[15px] font-medium text-[#8A8A8A] pb-3" data-mode="api">API授权</button>
+      </div>
+
+      <div id="quickPanel" class="mt-4">
+        <section class="rounded-[18px] border border-[#E9E9E9] bg-[#FAFAFB] px-4 py-5">
+          <div class="flex items-center justify-between gap-3">
+            <div class="w-[72px] h-[72px] rounded-[18px] bg-white shadow-sm border border-[#F0F0F0] flex items-center justify-center text-[28px]">🌀</div>
+            <div class="flex-1 px-1">
+              <div class="flex items-center justify-center gap-2 text-[#16C47F]">
+                <span class="w-2 h-2 rounded-full bg-[#16C47F]"></span>
+                <span class="h-1 w-12 bg-[#16C47F] rounded-full"></span>
+                <span class="text-[14px] font-semibold">安全连接</span>
+                <span class="h-1 w-12 bg-[#16C47F] rounded-full"></span>
+                <span class="w-2 h-2 rounded-full bg-[#16C47F]"></span>
+              </div>
+            </div>
+            <div id="quickExchangeLogo" class="w-[72px] h-[72px] rounded-[18px] bg-white shadow-sm border border-[#F0F0F0] flex items-center justify-center text-[28px] text-[#F3BA2F]">◇</div>
+          </div>
+          <p class="mt-5 text-center text-[14px] text-[#8A8A8A]">
+            官方直连授权地址 <span class="text-[#4C6FFF] font-semibold">查询账号信息</span>
+          </p>
+        </section>
+
+        <section class="mt-4 rounded-[18px] border border-[#E9E9E9] bg-[#FAFAFB] px-4 py-5">
+          <h2 class="text-[15px] font-semibold text-[#1F1F1F]">完成首次授权流程：</h2>
+          <div class="mt-4 space-y-2 text-[14px] leading-7 text-[#8A8A8A]">
+            <p>1.点击下方按钮，跳转到对应交易所授权页面</p>
+            <p>2.登录你的交易所账户，并授权 知道Ai 访问权限</p>
+            <p>3.授权完成后，系统将自动获取你的账户信息</p>
+            <p>4.返回本页面，即可开始使用 AI 交易助手</p>
+          </div>
+        </section>
+      </div>
+
+      <div id="apiPanel" class="mt-4 panel-hidden">
+        <div class="rounded-[18px] border border-[#F7D8A7] bg-[#FFF4E4] px-4 py-4 text-[14px] leading-6 text-[#FF8A00] font-medium">
+          为了保障交易安全，请务必核实信息后再提交。
+        </div>
+
+        <div class="mt-4 space-y-4">
+          <div>
+            <label id="remarkLabel" class="block text-[14px] font-semibold text-[#1F1F1F] mb-2">备注（选填）</label>
+            <input id="remarkInput" class="w-full h-[54px] rounded-[16px] border border-[#E5E7EB] bg-[#F7F7F8] px-4 text-[16px] outline-none" placeholder="可不填，输入以便管理" />
+          </div>
+
+          <div>
+            <label id="fieldOneLabel" class="block text-[14px] font-semibold text-[#1F1F1F] mb-2">API Key+ <span class="text-[#FF4D5A]">*</span></label>
+            <input id="fieldOneInput" class="w-full h-[54px] rounded-[16px] border border-[#E5E7EB] bg-[#F7F7F8] px-4 text-[16px] outline-none" placeholder="输入API Key" />
+          </div>
+
+          <div>
+            <label id="fieldTwoLabel" class="block text-[14px] font-semibold text-[#1F1F1F] mb-2">密钥 <span class="text-[#FF4D5A]">*</span></label>
+            <input id="fieldTwoInput" class="w-full h-[54px] rounded-[16px] border border-[#E5E7EB] bg-[#F7F7F8] px-4 text-[16px] outline-none" placeholder="输入Secret Key" />
+          </div>
+
+          <div id="passphraseField">
+            <label id="fieldThreeLabel" class="block text-[14px] font-semibold text-[#1F1F1F] mb-2">密码(Passphrase) <span class="text-[#FF4D5A]">*</span></label>
+            <input id="fieldThreeInput" class="w-full h-[54px] rounded-[16px] border border-[#E5E7EB] bg-[#F7F7F8] px-4 text-[16px] outline-none" placeholder="输入Passphrase" />
+          </div>
+        </div>
+
+        <label class="mt-4 flex items-center gap-3 text-[14px] text-[#444]">
+          <input type="checkbox" checked class="w-5 h-5 rounded border border-[#C9CDD3]" />
+          <span>我已了解授权风险</span>
+        </label>
+
+        <div class="mt-4 space-y-3">
+          <label class="flex items-center gap-3 text-[14px] text-[#444]">
+            <input type="checkbox" class="w-5 h-5 rounded border border-[#C9CDD3]" />
+            <span>开启资产统计</span>
+          </label>
+          <label class="flex items-center gap-3 text-[14px] text-[#444]">
+            <input type="checkbox" class="w-5 h-5 rounded border border-[#C9CDD3]" />
+            <span>设为默认账户</span>
+          </label>
+        </div>
+
+        <button class="mt-4 w-full h-[56px] rounded-[18px] bg-[#FF9518] text-white text-[17px] font-semibold shadow-[0_10px_24px_rgba(255,149,24,0.22)]">
+          添加
+        </button>
+
+        <div class="mt-4 rounded-[18px] border border-[#F7D8A7] bg-[#FFF4E4] px-4 py-4 text-[14px] leading-7 text-[#FF8A00]">
+          API密钥经过多重加密且仅保存在您的浏览器中，不会存储在服务器。
+        </div>
+
+        <section class="mt-4 rounded-[18px] border border-[#E9E9E9] bg-[#FAFAFB] px-4 py-5">
+          <h2 class="text-[15px] font-semibold text-[#1F1F1F]">授权教程</h2>
+          <div id="tutorialSteps" class="mt-4 space-y-2 text-[14px] leading-7 text-[#4B5563]"></div>
+        </section>
+
+      </div>
+
+      <button id="authorizePrimaryBtn" class="mt-4 w-full h-[56px] rounded-[18px] bg-[#FF9518] text-white text-[17px] font-semibold shadow-[0_10px_24px_rgba(255,149,24,0.22)]">
+        前往在线即时授权币安账户
+      </button>
+    </section>
+  </main>
+
+  <script>
+    const exchangeTabs = Array.from(document.querySelectorAll("[data-exchange]"));
+    const modeTabs = Array.from(document.querySelectorAll("[data-mode]"));
+    const quickPanel = document.getElementById("quickPanel");
+    const apiPanel = document.getElementById("apiPanel");
+    const modeTabsWrap = document.getElementById("modeTabs");
+    const passphraseField = document.getElementById("passphraseField");
+    const quickExchangeLogo = document.getElementById("quickExchangeLogo");
+    const tutorialSteps = document.getElementById("tutorialSteps");
+    const authorizePrimaryBtn = document.getElementById("authorizePrimaryBtn");
+    const remarkLabel = document.getElementById("remarkLabel");
+    const remarkInput = document.getElementById("remarkInput");
+    const fieldOneLabel = document.getElementById("fieldOneLabel");
+    const fieldOneInput = document.getElementById("fieldOneInput");
+    const fieldTwoLabel = document.getElementById("fieldTwoLabel");
+    const fieldTwoInput = document.getElementById("fieldTwoInput");
+    const fieldThreeLabel = document.getElementById("fieldThreeLabel");
+    const fieldThreeInput = document.getElementById("fieldThreeInput");
+
+    const exchangeConfig = {
+      binance: {
+        quick: true,
+        logo: { text: "◇", className: "text-[#F3BA2F]" },
+        quickButtonText: "前往在线即时授权币安账户",
+        apiButtonText: "添加",
+        apiFields: {
+          remarkLabel: "备注（选填）",
+          remarkPlaceholder: "可不填，输入以便管理",
+          fieldOneLabel: "API Key+",
+          fieldOnePlaceholder: "输入API Key",
+          fieldTwoLabel: "密钥",
+          fieldTwoPlaceholder: "输入Secret Key",
+          fieldThreeLabel: "密码(Passphrase)",
+          fieldThreePlaceholder: "输入Passphrase",
+          showThird: true
+        },
+        tutorial: [
+          "1. 访问币安，完成登录",
+          "2. 点击【个人中心】→【API管理】→【创建API】",
+          "3. 设置API权限，开启\"现货及杠杆交易\"",
+          "4. 复制API Key和Secret Key",
+          "5. 将信息填写到本页面表单中",
+          "6. 点击添加完成授权"
+        ]
+      },
+      okx: {
+        quick: true,
+        logo: { text: "◫", className: "text-black" },
+        quickButtonText: "前往在线即时授权OKX账户",
+        apiButtonText: "添加",
+        apiFields: {
+          remarkLabel: "备注（选填）",
+          remarkPlaceholder: "可不填，输入以便管理",
+          fieldOneLabel: "API Key+",
+          fieldOnePlaceholder: "输入API Key",
+          fieldTwoLabel: "密钥",
+          fieldTwoPlaceholder: "输入Secret Key",
+          fieldThreeLabel: "密码(Passphrase)",
+          fieldThreePlaceholder: "输入Passphrase",
+          showThird: true
+        },
+        tutorial: [
+          "1. 登录 OKX 账户并进入 API 管理",
+          "2. 新建 API，选择只读或交易权限",
+          "3. 记录 API Key、Secret Key 和 Passphrase",
+          "4. 将信息填写到本页表单",
+          "5. 点击添加完成授权"
+        ]
+      },
+      hyperliquid: {
+        quick: false,
+        logo: { text: "◉", className: "text-[#16C47F]" },
+        quickButtonText: "前往在线即时授权Hyperliquid账户",
+        apiButtonText: "添加",
+        apiFields: {
+          remarkLabel: "备注（选填）",
+          remarkPlaceholder: "可不填，输入以便管理",
+          fieldOneLabel: "主链地址",
+          fieldOnePlaceholder: "填写主钱包地址",
+          fieldTwoLabel: "API链地址",
+          fieldTwoPlaceholder: "API钱包地址",
+          fieldThreeLabel: "API私钥",
+          fieldThreePlaceholder: "API钱包私钥",
+          showThird: true
+        },
+        tutorial: [
+          "1. 登录 Hyperliquid 并完成钱包连接",
+          "2. 在 API 设置中生成 API Wallet",
+          "3. 复制主链地址、API链地址和 API 私钥",
+          "4. 将信息填写到本页表单并核对",
+          "5. 点击添加完成授权"
+        ]
+      }
+    };
+
+    let currentExchange = "binance";
+    let currentMode = "quick";
+
+    function renderTutorial(items) {
+      tutorialSteps.innerHTML = items.map((item) => `<p>${item}</p>`).join("");
+    }
+
+    function updateExchange() {
+      const config = exchangeConfig[currentExchange];
+      exchangeTabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.exchange === currentExchange));
+
+      quickExchangeLogo.textContent = config.logo.text;
+      quickExchangeLogo.className = `w-[72px] h-[72px] rounded-[18px] bg-white shadow-sm border border-[#F0F0F0] flex items-center justify-center text-[28px] ${config.logo.className}`;
+      renderTutorial(config.tutorial);
+
+      const fields = config.apiFields;
+      remarkLabel.textContent = fields.remarkLabel;
+      remarkInput.placeholder = fields.remarkPlaceholder;
+      fieldOneLabel.innerHTML = `${fields.fieldOneLabel} <span class="text-[#FF4D5A]">*</span>`;
+      fieldOneInput.placeholder = fields.fieldOnePlaceholder;
+      fieldTwoLabel.innerHTML = `${fields.fieldTwoLabel} <span class="text-[#FF4D5A]">*</span>`;
+      fieldTwoInput.placeholder = fields.fieldTwoPlaceholder;
+      fieldThreeLabel.innerHTML = `${fields.fieldThreeLabel} <span class="text-[#FF4D5A]">*</span>`;
+      fieldThreeInput.placeholder = fields.fieldThreePlaceholder;
+
+      modeTabs[0].classList.toggle("panel-hidden", !config.quick);
+      if (!config.quick && currentMode === "quick") {
+        currentMode = "api";
+      }
+      passphraseField.classList.toggle("panel-hidden", !fields.showThird);
+      authorizePrimaryBtn.textContent = currentMode === "api" ? config.apiButtonText : config.quickButtonText;
+
+      updateMode();
+    }
+
+    function updateMode() {
+      modeTabs.forEach((tab) => {
+        const active = tab.dataset.mode === currentMode;
+        tab.classList.toggle("active", active);
+        tab.classList.toggle("text-[#8A8A8A]", !active);
+      });
+      quickPanel.classList.toggle("panel-hidden", currentMode !== "quick");
+      apiPanel.classList.toggle("panel-hidden", currentMode !== "api");
+      const config = exchangeConfig[currentExchange];
+      authorizePrimaryBtn.textContent = currentMode === "api" ? config.apiButtonText : config.quickButtonText;
+      authorizePrimaryBtn.classList.toggle("panel-hidden", currentMode === "api");
+    }
+
+    exchangeTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        currentExchange = tab.dataset.exchange;
+        updateExchange();
+      });
+    });
+
+    modeTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        if (tab.classList.contains("panel-hidden")) return;
+        currentMode = tab.dataset.mode;
+        updateMode();
+      });
+    });
+
+    updateExchange();
+  </script>
+</body>
+</html>
