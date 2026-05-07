@@ -1,9 +1,17 @@
 {
+  "version": 2,
   "cleanUrls": false,
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/discover.html"
-    }
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "*.js", "use": "@vercel/static" },
+    { "src": "*.css", "use": "@vercel/static" },
+    { "src": "image/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/news/feed", "dest": "/api/news/feed.js" },
+    { "src": "/api/markets/binance-24hr", "dest": "/api/markets/binance-24hr.js" },
+    { "handle": "filesystem" },
+    { "src": "/", "dest": "/discover.html" }
   ]
 }
